@@ -1,0 +1,8 @@
+.input-group {
+    display: flex;
+    align-items: center;
+  }
+
+  .currency-symbol {
+    margin-right: 5px;
+  }
