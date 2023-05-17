@@ -2,7 +2,7 @@
 
 require_once 'banco.php';
 
-$sql = "SELECT * FROM caddesp";
+$sql = "SELECT * FROM cadrec";
 $result = $conn->query($sql);
 ?>
 
@@ -110,58 +110,6 @@ document.addEventListener('click', function(event) {
 });
 
 
-function pagarDespesa() {
-    var linhasSelecionadas = document.querySelectorAll('.selecionada');
-
-    var despesasJaPagas = [];
-
-    if (linhasSelecionadas.length === 0) {
-        alert("Selecione pelo menos uma despesa para pagar.");
-        return;
-    }
-
-    linhasSelecionadas.forEach(function(linha) {
-            if (linha.classList.contains('Sim')) {
-                despesasJaPagas.push(linha);
-            } else {
-                // Marcar a despesa como paga
-                linha.classList.remove('Não');
-                linha.classList.add('Sim');
-                linha.querySelector('.pago-col').textContent = 'Sim';
-            }
-        });
-
-        if (despesasJaPagas.length > 0) {
-            var mensagem = "As despesas marcadas como pagas não serão alteradas:\n";
-            despesasJaPagas.forEach(function(linha) {
-            });
-            alert(mensagem);
-        }
-
-    else if (confirm("Tem certeza que deseja marcar as despesas selecionadas como pagas?")) {
-
-
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'pagar.php', true);
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // A requisição foi concluída com sucesso
-                alert(xhr.responseText);
-                // Atualize a tabela ou faça outras ações necessárias
-            }
-        };
-
-        xhr.send('ids=' + idsSelecionados.join(','));
-
-
-
-    }
-}
-
-
-
 function excluirSelecionados() {
     if (idsSelecionados.length === 0) {
         alert("Selecione pelo menos uma linha para excluir.");
@@ -208,50 +156,23 @@ function excluirSelecionados() {
 if ($result->num_rows > 0) {
     echo "<table class='tabela-despesas'>
             <tr>
-                <th>Nome da Despesa</th>
-                <th>Categoria</th>
-                <th>Valor</th>
-                <th>Data de Vencimento</th>
-                <th>Forma de Pagamento</th>
-                <th>Imóvel Associado</th>
-                <th>Parcela</th>
-                <th>Pago</th>
-                <th>Informações Complementares</th>
+                <th>Tipo da Receita</th>
+                <th>Tipo de Recebimento</th>
+                <th>Valor da Receita</th>
+                <th>Data de Recebimento</th>
             </tr>";
 
     while ($row = $result->fetch_assoc()) {
-        $dataVencimento = date("d/m/Y", strtotime($row["vencimento"]));
-        $pagoClass = ($row["pago"] == 1) ? "Sim" : "Não";
+        $dataRecebe = date("d/m/Y", strtotime($row["datarecebe"]));
 
 
-        if($row['parcela'] == 0){
-            $row['parcela'] = "valor único";
-        }
-        else{
+        echo "<tr onclick=\"selecionarLinha(this)\" data-id=\"" . $row["id"] . "\">
+        <td>" . $row["tiporec"] . "</td>
+        <td>" . $row["tiporecebe"] . "</td>
+        <td> R$ " .$row["valorrec"] . "</td>
+        <td>" . $dataRecebe . "</td>
+        </tr>";
 
-            $row['parcela'] = $row['parcela']." vezes";
-        }
-
-
-        if($row['formapag'] == "cartaoCredito")
-        {
-            $row['formapag'] = "Cartão de Crédito";
-        }
-        elseif($row['formapag'] == "tranferencia"){
-            $row['formapag'] = "Tranferência";
-        }
-
-        echo "<tr onclick=\"selecionarLinha(this)\" class=\"$pagoClass\" data-id=\"" . $row["id"] . "\">
-                <td>" . $row["nome"] . "</td>
-                <td>" . $row["categoria"] . "</td>
-                <td> R$ " . $row["valor"] . "</td>
-                <td>" . $dataVencimento . "</td>
-                <td>" . $row["formapag"] . "</td>
-                <td>" . $row["imovelassoc"] . "</td>
-                <td>" . $row["parcela"] . "</td>
-                <td class=\"pago-col\">" . $pagoClass . "</td>
-                <td>" . $row["infocomp"] . "</td>
-            </tr>";
 
 
     }
@@ -259,7 +180,7 @@ if ($result->num_rows > 0) {
 
     echo "<hr>";
 
-        $sql = "SELECT SUM(valor) AS soma_valores, COUNT(*) AS valor_total FROM caddesp";
+        $sql = "SELECT SUM(valorrec) AS soma_valores, COUNT(*) AS valor_total FROM cadrec";
         $result = $conn->query($sql);
 
         // Obtém os dados da query como um array associativo
@@ -268,12 +189,11 @@ if ($result->num_rows > 0) {
 
         echo "<h2> Valor Total: R$:". $dados['soma_valores']. "</h2>";
 
-    echo "<button class='botao-pagar' onclick='pagarDespesa()'>Pagar Despesa</button>";
             echo "<button class='botao-excluir' onclick='excluirSelecionados()'>Excluir Despesa</button>";
-            echo '<button class="botao-cadastro" onclick="location.href=\'CadastroDespesa.php\'">Cadastrar nova despesa</button>';
+            echo '<button class="botao-cadastro" onclick="location.href=\'CadastroReceita.php\'">Cadastrar nova receita</button>';
         } else {
     echo "Nenhum registro encontrado.";
-    echo '<button class="botao-cadastro" onclick="location.href=\'CadastroDespesa.php\'">Cadastrar nova despesa</button>';
+    echo '<button class="botao-cadastro" onclick="location.href=\'CadastroReceita.php\'">Cadastrar nova receita</button>';
 
 }
 

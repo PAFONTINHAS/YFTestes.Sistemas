@@ -20,7 +20,7 @@ if(isset($_POST['Cadastrar'])){
 
     // }
 
-        $sql = "INSERT INTO cadastro(nome, categoria, valor, vencimento, formapag, imovelassoc, parcela, infocomp) VALUES ('$nomeDespesa','$categoria','$valor','$dataVencimento','$formaPagamento','$imovelAssociado','$parcela', '$infocomp')";
+        $sql = "INSERT INTO caddesp(nome, categoria, valor, vencimento, formapag, imovelassoc, parcela, infocomp) VALUES ('$nomeDespesa','$categoria','$valor','$dataVencimento','$formaPagamento','$imovelAssociado','$parcela', '$infocomp')";
 
         $query = mysqli_query($conn, $sql);
 

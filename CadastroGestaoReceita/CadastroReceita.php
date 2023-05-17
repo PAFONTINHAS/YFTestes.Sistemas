@@ -1,7 +1,7 @@
 <?php
 
-$doisAnosAtras = date('Y-m-d', strtotime('-2 years'));
-$cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
+$umAnoAtras = date('d/m/Y', strtotime('-1 year'));
+$umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
 ?>
 
 
@@ -72,50 +72,43 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
 <body>
 
 <form action= "processa.php" method= "POST">
-  <label for="nome">Nome da despesa:</label>
-  <input type="text" id="nome" name="nome" required>
 
-  <label for="categoria">Categoria:</label>
-  <select id="categoria" name="categoria">
-    <option value="alimentacao">Alimentação</option>
-    <option value="moradia">Moradia</option>
-    <option value="transporte">Transporte</option>
+<label for="TipoReceita">Tipo da Receita</label>
+  <select id="TipoReceita" name="TipoReceita">
+    <option value="salario">Salário</option>
+    <option value="comissao">Comissão</option>
+    <option value="saldoini">Saldo Inicial</option>
+</select>
+
+
+  <label for="TipoRecebe">Tipo de Recebimento</label>
+  <select id="TipoRecebe" name="TipoRecebe">
+    <option value="Dinheiro">Dinheiro</option>
+    <option value="Cheque">Cheque</option>
+    <option value="CartaoCred">Cartão de Crédito</option>
+    <option value="CartaoDeb">Cartão de Débito</option>
+
     <!-- Outras opções de categoria -->
   </select>
 
-  <label for="valor">Valor da despesa:</label>
-  <input type="text" onKeyUp="mascaraMoeda(this, event)" name="valor">
+  <label for="valorRec">Valor da Receita:</label>
+  <input type="text"  name="valorRec">
 
-  <label for="dataVencimento">Data de vencimento:</label>
-  <input type="date" id="dataVencimento" name="dataVencimento" min="<?php echo $doisAnosAtras; ?>" max="<?php echo $cemAnosFrente; ?>" required>
+  <label for="dataRecebe">Data de recebimento:</label>
+  <input type="date" id="dataRecebe" name="dataRecebe" min="<?php echo $umAnoAtras; ?>" max="<?php echo $umAnoFrente; ?>" required>
 
-  <label for="formaPagamento">Forma de pagamento:</label>
-  <select id="formaPagamento" name="formaPagamento">
-    <option value="cartaoCredito">Cartão de Crédito</option>
-    <option value="Dinheiro">Dinheiro</option>
-    <option value="transferencia">Transferência Bancária</option>
-  </select>
-
-  <label for="imovelAssociado">Imóvel associado:</label>
-  <select id="imovelAssociado" name="imovelAssociado">
-    <option value="casa">Casa</option>
-    <option value="apartamento">Apartamento</option>
-    <option value="terreno">Terreno</option>
-    <!-- Outras opções de imóvel associado -->
-  </select>
-
-  <label for="parcelas">Parcela:</label>
-  <select id="parcelas" name="parcelas">
+  <label for="repete">Tipo de Repetição</label>
+  <select id="repete" name="repete">
   <option value='0'>Valor único</option>
   <?php
 
-  $parcela = 1;
+  $recebe = 1;
 
   for ($i=0; $i < 47; $i++) {
 
-    $parcela ++;
+    $recebe++;
 
-    echo "<option value='$parcela'>$parcela</option>";
+    echo "<option value='$recebe'>$recebe</option>";
   }
 
   ?>
@@ -126,10 +119,10 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
   <textarea id="infoComplementares" name="infoComplementares"></textarea>
 
 
-  <button type="submit" name = "Cadastrar"> Cadastrar Despesa</button>
+  <button type="submit" name = "Cadastrar"> Cadastrar Receita</button>
 </form>
 
-<form action="GestaoDespesa.php"><button type="submit">Gestão de Despesas</button></form>
+<form action="GestaoReceita.php"><button type="submit">Gestão de Receitas</button></form>
 
 
 

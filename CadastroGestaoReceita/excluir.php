@@ -12,7 +12,7 @@ if (isset($_POST['ids'])) {
     // Itera sobre os IDs e realiza a exclusão no banco de dados
     foreach ($idArray as $id) {
         // Prepara a instrução SQL de exclusão
-        $sql = "DELETE FROM caddesp WHERE id = ?";
+        $sql = "DELETE FROM cadrec WHERE id = ?";
 
         // Prepara a declaração
         $stmt = $conn->prepare($sql);

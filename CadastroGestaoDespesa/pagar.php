@@ -10,7 +10,7 @@ if(isset($_POST['ids'])){
     // Itera sobre os IDs e realiza a atualização no banco de dados
     foreach ($idArray as $id) {
         // Prepara a instrução SQL de atualização
-        $sql = "UPDATE cadastro SET pago = 1 WHERE id = ?";
+        $sql = "UPDATE caddesp SET pago = 1 WHERE id = ?";
 
         // Prepara a declaração
         $stmt = $conn->prepare($sql);
