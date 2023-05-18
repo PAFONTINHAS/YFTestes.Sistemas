@@ -211,10 +211,10 @@ if ($result->num_rows > 0) {
                 <th>Nome da Despesa</th>
                 <th>Categoria</th>
                 <th>Valor</th>
-                <th>Data de Vencimento</th>
+                <th>Parcela</th>
                 <th>Forma de Pagamento</th>
                 <th>Imóvel Associado</th>
-                <th>Parcela</th>
+                <th>Data de Vencimento</th>
                 <th>Pago</th>
                 <th>Informações Complementares</th>
             </tr>";
@@ -245,10 +245,10 @@ if ($result->num_rows > 0) {
                 <td>" . $row["nome"] . "</td>
                 <td>" . $row["categoria"] . "</td>
                 <td> R$ " . $row["valor"] . "</td>
-                <td>" . $dataVencimento . "</td>
+                <td>" . $row["parcela"] . "</td>
                 <td>" . $row["formapag"] . "</td>
                 <td>" . $row["imovelassoc"] . "</td>
-                <td>" . $row["parcela"] . "</td>
+                <td>" . $dataVencimento . "</td>
                 <td class=\"pago-col\">" . $pagoClass . "</td>
                 <td>" . $row["infocomp"] . "</td>
             </tr>";

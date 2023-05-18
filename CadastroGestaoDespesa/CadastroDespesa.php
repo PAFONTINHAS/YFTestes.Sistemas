@@ -115,7 +115,7 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
 
     $parcela ++;
 
-    echo "<option value='$parcela'>$parcela</option>";
+    echo "<option value='$parcela'>$parcela vezes</option>";
   }
 
   ?>
