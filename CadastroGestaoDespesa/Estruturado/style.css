@@ -1,0 +1,86 @@
+ /* Estilos CSS da tabela */
+ table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: blue;
+}
+
+.selecionada {
+    background-color: rgba(0, 0, 255, 0.319);
+}
+
+.sim {
+    background-color: #7FFF7F; /* Verde para despesas pagas */
+}
+
+.não {
+    background-color: #FF7F7F; /* Vermelho para despesas não pagas */
+}
+
+.botao-pagar {
+    background-color: #7FFF7F; /* Verde */
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.botao-excluir {
+    background-color: #FF7F7F; /* Vermelho */
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.botao-cadastro {
+    background-color: #FFFF7F; /* Amarelo */
+    color: black;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.selecionada {
+background-color: blue;
+}
+
+
+
+
+
+
+.modal {
+    display: none; /* Oculta o modal por padrão */
+    position: fixed; /* Posição fixa para sobrepor o conteúdo */
+    z-index: 1; /* Z-index para garantir que fique acima do restante do conteúdo */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro com transparência */
+}
+
+.modal-conteudo {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+}
