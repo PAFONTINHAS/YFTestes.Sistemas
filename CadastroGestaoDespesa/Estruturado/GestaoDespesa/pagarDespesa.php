@@ -1,8 +1,8 @@
 <?php
-require_once 'banco.php';
+require_once '../../../conexao/banco.php';
 
-if(isset($_POST['ids'])){
-    $ids = $_POST['ids'];
+if (isset($_POST['id'])) {
+    $ids = $_POST['id'];
 
     // Separa os IDs em um array
     $idArray = explode(',', $ids);
@@ -40,3 +40,4 @@ if(isset($_POST['ids'])){
 } else {
     echo "Nenhum ID definido.";
 }
+?>

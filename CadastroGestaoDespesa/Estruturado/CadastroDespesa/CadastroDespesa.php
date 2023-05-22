@@ -71,7 +71,7 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
 </head>
 <body>
 
-<form action= "processa.php" method= "POST">
+<form action= "cadastrar.php" method= "POST">
   <label for="nome">Nome da despesa:</label>
   <input type="text" id="nome" name="nome" required>
 
@@ -129,7 +129,7 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
   <button type="submit" name = "Cadastrar"> Cadastrar Despesa</button>
 </form>
 
-<form action="GestaoDespesa.php"><button type="submit">Gestão de Despesas</button></form>
+<form action="../GestaoDespesa/GestaoDespesa.php"><button type="submit">Gestão de Despesas</button></form>
 
 
 

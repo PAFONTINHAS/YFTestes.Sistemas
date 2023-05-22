@@ -1,6 +1,6 @@
 <?php
 
-require_once 'banco.php';
+ require_once '../../../conexao/banco.php';
 
 $sql = "SELECT * FROM cadrec";
 $result = $conn->query($sql);
@@ -120,7 +120,7 @@ function excluirSelecionados() {
         // Realize a requisição AJAX para excluir os registros no banco de dados
         // Use a variável idsSelecionados para enviar os IDs para o arquivo PHP
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'excluir.php', true);
+        xhr.open('POST', 'excluirDespesa.php', true);
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {

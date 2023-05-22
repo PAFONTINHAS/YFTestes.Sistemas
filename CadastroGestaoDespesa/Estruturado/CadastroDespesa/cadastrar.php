@@ -1,6 +1,6 @@
 <?php
 
-require 'banco.php';
+require_once '../../../conexao/banco.php';
 
 if(isset($_POST['Cadastrar'])){
 
