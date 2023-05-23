@@ -96,12 +96,12 @@ if ($result->num_rows > 0) {
         <p>Parcela: <span id="modalParcela"></span></p>
         <p>Forma de Pagamento: <span id="modalFormaPagamento"></span></p>
         <p>Imóvel Associado: <span id="modalImovelAssociado"></span></p>
-            <p>Data de Vencimento: <span id="modalDataVencimento"></span></p>
-            <p>Pago: <span id="modalPago"></span></p>
-            <p>Data de Pagamento: <input id="modalDataPagamento" class="calendario" type="text" name="dataPagamento" disabled></p>
-            <p>Informações Complementares: <span id="modalInformacoesComplementares"></span></p>
-            <button class="botao-pagar" name="pagar" onclick="pagarDespesa()">Pagar</button>
-            <button class="botao-excluir" name="excluir" onclick="excluirDespesa()">Excluir</button>
+        <p>Data de Vencimento: <span id="modalDataVencimento"></span></p>
+        <p>Pago: <span id="modalPago"></span></p>
+        <p>Data de Pagamento: <input id="modalDataPagamento" class="calendario" type="text" name="dataPagamento" disabled></p>
+        <p>Informações Complementares: <span id="modalInformacoesComplementares"></span></p>
+        <button class="botao-pagar" name="pagar" onclick="pagarDespesa()">Pagar</button>
+        <button class="botao-excluir" name="excluir" onclick="excluirDespesa()">Excluir</button>
         </div>
     </div>
 
@@ -248,6 +248,7 @@ td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    color: black;
 }
 
 th {
@@ -324,19 +325,21 @@ box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Estilos do botão de fechar */
-.close {
-color: #aaa;
-float: right;
-font-size: 28px;
-font-weight: bold;
-}
+.fechar {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-.close:hover,
-.close:focus {
-color: #333;
-text-decoration: none;
-cursor: pointer;
-}
+  .fechar:hover,
+  .fechar:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
 
 /* Estilos para o título do modal */
 .modal-title {
@@ -392,6 +395,7 @@ background-color: red;
 
 </style>
 </html>
+
 
 
 

@@ -94,7 +94,7 @@ $umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
   <label for="valorRec">Valor da Receita:</label>
   <input type="text"  name="valorRec">
 
-  <label for="dataRecebe">Data de recebimento:</label>
+  <label for="dataRecebe">Validade do Recebimento:</label>
   <input type="date" id="dataRecebe" name="dataRecebe" min="<?php echo $umAnoAtras; ?>" max="<?php echo $umAnoFrente; ?>" required>
 
   <label for="repete">Tipo de Repetição</label>
