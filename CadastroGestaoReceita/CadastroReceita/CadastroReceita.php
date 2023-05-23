@@ -71,7 +71,7 @@ $umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
 </head>
 <body>
 
-<form action= "processa.php" method= "POST">
+<form action= "cadastrar.php" method= "POST">
 
 <label for="TipoReceita">Tipo da Receita</label>
   <select id="TipoReceita" name="TipoReceita">
@@ -122,7 +122,7 @@ $umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
   <button type="submit" name = "Cadastrar"> Cadastrar Receita</button>
 </form>
 
-<form action="GestaoReceita.php"><button type="submit">Gestão de Receitas</button></form>
+<button onclick ="location.href='../GestaoReceita/GestaoReceita.php'">Gestão de Receitas</button>
 
 
 

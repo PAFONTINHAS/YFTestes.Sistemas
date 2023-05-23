@@ -61,17 +61,32 @@ if ($result->num_rows > 0) {
                 <td>" . $row["infocomp"] . "</td>
             </tr>";
         }
-        }
+
+    }
         else {
             echo "Nenhum registro encontrado.";
             echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroDespesa/CadastroDespesa.php\'">Cadastrar nova despesa</button>';
-    
+
         }
         ?>
-    
+
         </tr>
     </table>
-        <a href="../CadastroDespesa/CadastroDespesa.php">Cadastrar Nova Despesa</a>
+
+    <hr>
+
+    <?php
+
+        $sql = "SELECT SUM(valor) AS soma_valores, COUNT(*) AS valor_total FROM caddesp";
+        $result = $conn->query($sql);
+
+        // Obtém os dados da query como um array associativo
+        $dados = $result->fetch_assoc();
+    ?>
+
+    <h2>Valor Total: R$: <?php echo $dados['soma_valores']?> </h2>
+    <button class="botao-cadastro" onclick="location.href='../CadastroDespesa/CadastroDespesa.php'">Cadastrar nova despesa </button>
+
     <div id="myModal" class="modal" data-id="">
         <div class="modal-conteudo">
         <span class="fechar" onclick="fecharModal()">&times;</span>
@@ -130,6 +145,58 @@ if ($result->num_rows > 0) {
         modal.style.display = "none"; // Oculta o modal
     }
 
+
+
+function pagarDespesa() {
+    if (confirm("Tem certeza que deseja pagar essa despesa?")) {
+        var pagoSpan = document.getElementById("modalPago");
+        var dataPagamentoInput = document.getElementById("modalDataPagamento");
+
+        // Verificar se a despesa já está paga
+        if (pagoSpan.textContent === "Sim") {
+            alert("Essa despesa já está paga.");
+            return; // Encerrar a função sem prosseguir com a marcação de pagamento
+        }
+
+        var modal = document.getElementById("myModal");
+        var idDespesa = modal.getAttribute("data-id");
+
+        // Definir a data atual como a data de pagamento
+        var dataAtual = new Date();
+        var dia = String(dataAtual.getDate()).padStart(2, '0');
+        var mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
+        var ano = dataAtual.getFullYear();
+        var dataPagamento = dia + '/' + mes + '/' + ano;
+
+        // Atribuir a data atual ao campo de data de pagamento
+        dataPagamentoInput.value = dataPagamento;
+        dataPagamentoInput.setAttribute("readonly", true); // Impedir que a data seja alterada
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'pagarDespesa.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // A requisição foi concluída com sucesso
+                alert(xhr.responseText);
+                // Atualize a tabela ou faça outras ações necessárias
+            }
+        };
+
+        xhr.send('id=' + idDespesa);
+
+        var row = document.querySelector('tr[data-id="' + idDespesa + '"]');
+        if (row.classList.contains('Sim')) {
+            despesasJaPagas.push(row);
+        } else {
+            row.classList.remove("Não");
+            row.classList.add("Sim");
+        }
+
+        fecharModal();
+    }
+}
+
 function excluirDespesa() {
     if (confirm("Tem certeza que deseja excluir essa despesa?")) {
         var modal = document.getElementById("myModal");
@@ -157,66 +224,6 @@ function excluirDespesa() {
 }
 
 
-
-function pagarDespesa() {
-        if (confirm("Tem certeza que deseja pagar essa despesa?")) {
-
-            
-            var pagoSpan = document.getElementById("modalPago");
-            var dataPagamentoInput = document.getElementById("modalDataPagamento");
-
-            // Verificar se a despesa já está paga
-            if (pagoSpan.textContent === "Sim") {
-                alert("Essa despesa já está paga.");
-                return; // Encerrar a função sem prosseguir com a marcação de pagamento
-            }
-            else{
-                 var modal = document.getElementById("myModal");
-            var idDespesa = modal.getAttribute("data-id");
-
-            var dataPagamentoInput = document.getElementById("modalDataPagamento");
-            // Definir a data atual como a data de pagamento
-            var dataAtual = new Date();
-                var dia = String(dataAtual.getDate()).padStart(2, '0');
-                var mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
-                var ano = dataAtual.getFullYear();
-                var dataPagamento = dia + '/' + mes + '/' + ano;
-
-                // Atribuir a data atual ao campo de data de pagamento
-                dataPagamentoInput.value = dataPagamento;
-
-                // Remover o atributo readonly para permitir a edição da data de pagamento
-                dataPagamentoInput.removeAttribute("readonly");
-
-
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'pagarDespesa.php', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    // A requisição foi concluída com sucesso
-                    alert(xhr.responseText);
-                    // Atualize a tabela ou faça outras ações necessárias
-                }
-            };
-
-            xhr.send('id=' + idDespesa);
-
-            var row = document.querySelector('tr[data-id="' + idDespesa + '"]');
-            if (row.classList.contains('Sim')) {
-                despesasJaPagas.push(row);
-            } else {
-                row.classList.remove("Não");
-                row.classList.add("Sim");
-            }
-
-            fecharModal();
-        }
-            
-    }
-           
-}
-
     flatpickr(".calendario", {
         dateFormat: "d/m/Y", // Formato da data
         locale: "pt", // Idioma do calendário
@@ -224,165 +231,164 @@ function pagarDespesa() {
     });
 
  </script>
+
+
+
 <style>
-
-
 
      /* Estilos CSS da tabela */
    /* Estilos CSS da tabela */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
+   table {
+    border-collapse: collapse;
+    width: 100%;
+}
 
-    th,
-    td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
 
-    th {
-        background-color: #f2f2f2;
-    }
+th {
+    background-color: #f2f2f2;
+}
 
-    tr:hover {
-        background-color: blue;
-    }
+tr:hover {
+    background-color: blue;
+}
 
-    .selecionada {
-        background-color: rgba(0, 0, 255, 0.319);
-    }
+.selecionada {
+    background-color: rgba(0, 0, 255, 0.319);
+}
 
-    .Sim {
-        background-color: #7FFF7F; /* Verde para despesas pagas */
-    }
+.Sim {
+    background-color: #7FFF7F; /* Verde para despesas pagas */
+}
 
-    .Não {
-        background-color: #FF7F7F; /* Vermelho para despesas não pagas */
-    }
+.Não {
+    background-color: #FF7F7F; /* Vermelho para despesas não pagas */
+}
 
-    .botao-pagar {
-        background-color: #7FFF7F; /* Verde */
-        color: white;
-        padding: 6px 12px;
-        border: none;
-        cursor: pointer;
-        margin-right: 10px;
-    }
+.botao-pagar {
+    background-color: #7FFF7F; /* Verde */
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
 
-    .botao-excluir {
-        background-color: #FF7F7F; /* Vermelho */
-        color: white;
-        padding: 6px 12px;
-        border: none;
-        cursor: pointer;
-        margin-right: 10px;
-    }
+.botao-excluir {
+    background-color: #FF7F7F; /* Vermelho */
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
 
-    .botao-cadastro {
-        background-color: #FFFF7F; /* Amarelo */
-        color: black;
-        padding: 6px 12px;
-        border: none;
-        cursor: pointer;
-        margin-right: 10px;
-    }
+.botao-cadastro {
+    background-color: #FFFF7F; /* Amarelo */
+    color: black;
+    padding: 6px 12px;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
 
-    .selecionada {
-        background-color: blue;
-    }
+.selecionada {
+    background-color: blue;
+}
 
 /* Estilos do modal */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+display: none;
+position: fixed;
+z-index: 1000;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-conteudo {
-  background-color: #f8f8f8;
-  margin: 20% auto;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 400px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+background-color: #f8f8f8;
+margin: 20% auto;
+padding: 20px;
+border-radius: 10px;
+max-width: 400px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Estilos do botão de fechar */
 .close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+color: #aaa;
+float: right;
+font-size: 28px;
+font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-  color: #333;
-  text-decoration: none;
-  cursor: pointer;
+color: #333;
+text-decoration: none;
+cursor: pointer;
 }
 
 /* Estilos para o título do modal */
 .modal-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
+font-size: 18px;
+font-weight: bold;
+margin-bottom: 10px;
+color: #333;
 }
 
 /* Estilos para o calendário */
 .calendario {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  color: #333;
+width: 100%;
+padding: 10px;
+margin-bottom: 10px;
+border-radius: 4px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+font-family: Arial, sans-serif;
+font-size: 14px;
+color: #333;
 }
 
 /* Estilos para o botão de pagamento */
 .botao-pagar {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+background-color: #4caf50;
+color: white;
+padding: 10px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-family: Arial, sans-serif;
+font-size: 14px;
 }
 
 .botao-pagar:hover {
-  background-color: #45a049;
+background-color: #45a049;
 }
 
 .botao-excluir {
-  background-color: red;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
+background-color: red;
+color: white;
+padding: 10px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-family: Arial, sans-serif;
+font-size: 14px;
 }
 
 .botao-excluir:hover {
-  background-color: red;
+background-color: red;
 }
-
-
 
 </style>
 </html>
