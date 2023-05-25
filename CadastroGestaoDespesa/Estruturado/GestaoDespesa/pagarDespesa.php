@@ -36,7 +36,7 @@ if (isset($_POST['id'])) {
     // Fecha a conexão com o banco de dados
     $conn->close();
 
-    echo "Despesa(s) marcada(s) como paga(s) com sucesso.";
+    echo "Despesa marcada como paga com sucesso.";
 } else {
     echo "Nenhum ID definido.";
 }

@@ -1,5 +1,90 @@
 <?php
 require_once '../../../conexao/banco.php';
+function organizacao($parcela,$categoria,$pagamento,$imovelAssoc,$valor){
+
+    // Alterações da Parcela
+
+    if($parcela == 0 ){
+        $parcela = "valor único";
+    }
+    else{
+        $parcela .= " vezes";
+    }
+    // Alterações da categoria
+
+    if($categoria == "Alimentacao"){
+        $categoria = "Alimentação";
+    }
+    elseif($categoria == "Educacao"){
+        $categoria = "Educação";
+    }
+    elseif($categoria == "Saude"){
+        $categoria = "Saúde";
+    }
+    elseif($categoria == "Vestuario"){
+        $categoria = "Vestuário";
+    }
+    elseif($categoria == "Acessorios"){
+        $categoria = "Acessórios";
+    }
+    elseif($imovelAssoc == "Eletronicos"){
+        $imovelAssoc = "Eletrônicos";
+    }
+    elseif($categoria == "ServicoPublico"){
+        $categoria = "Serviço Público";
+    }
+    elseif($categoria == "CuidadosPessoais"){
+        $categoria = "Cuidados Pessoais";
+    }
+    elseif($categoria == "Doacoes-Caridade"){
+        $categoria = "Doações/Caridade";
+    }
+    elseif($categoria == "SuperMercado"){
+        $categoria = "Super Mercado";
+    }
+
+    // Alterações do tipo de pagamento
+
+    if ($pagamento == "CartaoCredito"){
+        $pagamento = "Cartão de Crédito";
+    }
+    elseif($pagamento == "CartaoDebito"){
+        $pagamento = "Cartão de Débito";
+    }
+    elseif($categoria == "Trasferencia"){
+        $categoria = "Tranferência Bancária";
+    }
+    elseif($categoria == "Boleto"){
+        $categoria = "Boleto Bancário";
+    }
+
+
+    // Alterações do imóvel associado
+
+    if($imovelAssoc == "Galpao-Armazem"){
+        $imovelAssoc = "Galpão/Armazém";
+    }
+    elseif($imovelAssoc == "Sitio-Fazenda"){
+        $imovelAssoc = "Sítio/Fazenda";
+    }
+    elseif($imovelAssoc == "Chacara"){
+        $imovelAssoc = "Chácara";
+    }
+    elseif($imovelAssoc == "PredioComercial"){
+        $imovelAssoc = "Prédio Comercial";
+    }
+    elseif($imovelAssoc == "SalaComercial"){
+        $imovelAssoc = "Sala Comercial";
+    }
+
+    $valorDespFormatado = number_format($valor, 2, ',', '.');
+
+
+    return [$categoria, $pagamento, $parcela,$imovelAssoc, $valorDespFormatado];
+
+
+
+}
 
 $sql = "SELECT * FROM caddesp";
 $result = $conn->query($sql);
@@ -37,25 +122,16 @@ if ($result->num_rows > 0) {
             $dataVencimento = date("d/m/Y", strtotime($row["vencimento"]));
             $pagoClass = ($row["pago"] == 1) ? "Sim" : "Não";
 
-            if ($row['parcela'] == 0) {
-                $row['parcela'] = "valor único";
-            } else {
-                $row['parcela'] = $row['parcela'] . " vezes";
-            }
+            [$parcela, $categoria, $pagamento,$imovelAssoc, $valorDespFormatado] = organizacao($row["parcela"], $row["categoria"], $row["formapag"], $row["imovelassoc"] , $row["valor"]);
 
-            if ($row['formapag'] == "cartaoCredito") {
-                $row['formapag'] = "Cartão de Crédito";
-            } elseif ($row['formapag'] == "tranferencia") {
-                $row['formapag'] = "Transferência";
-            }
 
             echo "<tr onclick=\"abrirModal(this)\" class=\"$pagoClass\" data-id=\"" . $row["id"] . "\">
                 <td>" . $row["nome"] . "</td>
-                <td>" . $row["categoria"] . "</td>
-                <td> R$ " . $row["valor"] . "</td>
-                <td>" . $row["parcela"] . "</td>
-                <td>" . $row["formapag"] . "</td>
-                <td>" . $row["imovelassoc"] . "</td>
+                <td>" . $categoria . "</td>
+                <td> R$ " . $valorDespFormatado . "</td>
+                <td>" . $parcela . "</td>
+                <td>" . $pagamento. "</td>
+                <td>" . $imovelAssoc . "</td>
                 <td>" . $dataVencimento . "</td>
                 <td class=\"pago-col\">" . $pagoClass . "</td>
                 <td>" . $row["infocomp"] . "</td>

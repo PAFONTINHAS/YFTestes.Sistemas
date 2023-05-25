@@ -20,7 +20,20 @@ if(isset($_POST['Cadastrar'])){
 
     // }
 
-        $sql = "INSERT INTO caddesp(nome, categoria, valor, vencimento, formapag, imovelassoc, parcela, infocomp) VALUES ('$nomeDespesa','$categoria','$valor','$dataVencimento','$formaPagamento','$imovelAssociado','$parcela', '$infocomp')";
+            // Remover símbolo "R$", pontos de milhar e substituir a vírgula pelo ponto
+    // Remover símbolo "R$", pontos de milhar e substituir a vírgula pelo ponto
+    $valorDespFormatado = preg_replace('/[^\d,]/', '', $valor); // Resultado: 12,233.12
+
+
+    // Converter para um número decimal
+    $valorDespDecimal = str_replace(',', '.', $valorDespFormatado); // Certifique-se de que a coluna no banco de dados seja do tipo decimal
+    $valorDespDecimal = floatval($valorDespDecimal);
+
+
+    // Restante do código...
+
+
+        $sql = "INSERT INTO caddesp(nome, categoria, valor, vencimento, formapag, imovelassoc, parcela, infocomp) VALUES ('$nomeDespesa','$categoria','$valorDespDecimal','$dataVencimento','$formaPagamento','$imovelAssociado','$parcela', '$infocomp')";
 
         $query = mysqli_query($conn, $sql);
 

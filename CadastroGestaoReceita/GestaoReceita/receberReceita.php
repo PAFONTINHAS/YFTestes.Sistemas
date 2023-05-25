@@ -1,7 +1,7 @@
 <?php
 require_once '../../conexao/banco.php';
 
-if (isset($_POST['id'])) {
+if (isset($_POST['id'])){
     $ids = $_POST['id'];
 
     // Separa os IDs em um array
@@ -23,7 +23,7 @@ if (isset($_POST['id'])) {
 
         // Verifica se ocorreu algum erro na execução
         if ($stmt->errno) {
-            echo "Erro ao atualizar despesa: " . $stmt->error;
+            echo "Erro ao receber receita: " . $stmt->error;
             $stmt->close();
             $conn->close();
             exit(); // Encerra o script em caso de erro
@@ -36,7 +36,7 @@ if (isset($_POST['id'])) {
     // Fecha a conexão com o banco de dados
     $conn->close();
 
-    echo "Despesa(s) marcada(s) como paga(s) com sucesso.";
+    echo "Receita marcada como recebida com sucesso.";
 } else {
     echo "Nenhum ID definido.";
 }

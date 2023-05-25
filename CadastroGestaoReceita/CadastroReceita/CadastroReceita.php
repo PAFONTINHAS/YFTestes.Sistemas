@@ -1,9 +1,8 @@
 <?php
 
-$umAnoAtras = date('d/m/Y', strtotime('-1 year'));
-$umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
+$umAnoAtras = date( 'Y-m-d', strtotime('-1 year'));
+$umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
 ?>
-
 
 
 <!DOCTYPE html>
@@ -14,6 +13,12 @@ $umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.1.0/autoNumeric.min.js"></script>
+
+
 
     <style>
   /* Estilos para o formulário */
@@ -75,24 +80,37 @@ $umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
 
 <label for="TipoReceita">Tipo da Receita</label>
   <select id="TipoReceita" name="TipoReceita">
-    <option value="salario">Salário</option>
-    <option value="comissao">Comissão</option>
-    <option value="saldoini">Saldo Inicial</option>
+    <option> Selecionar</option>
+    <option value="Salario">Salário</option>
+    <option value="Comissao">Comissão</option>
+    <option value="Saldoini">Saldo Inicial</option>
+    <option value="Aluguel">Aluguel</option>
+    <option value="Investimento">Inventimentos</option>
+    <option value="Alimentacao">Alimentação</option>
+    <option value="Eventos">Eventos</option>
+    <option value="Reembolso">Reembolso</option>
+    <option value="Doacao">Doação</option>
+    <option value="Emprestimo">Empréstimo</option>
+
 </select>
 
 
   <label for="TipoRecebe">Tipo de Recebimento</label>
   <select id="TipoRecebe" name="TipoRecebe">
+    <option> Selecionar</option>
     <option value="Dinheiro">Dinheiro</option>
     <option value="Cheque">Cheque</option>
     <option value="CartaoCred">Cartão de Crédito</option>
     <option value="CartaoDeb">Cartão de Débito</option>
-
+    <option value="Pix">Pix</option>
+    <option value="PayPal">PayPal</option>
+    <option value="PicPay">PicPay</option>
+    <option value="PagSeguro">PagSeguro</option>
     <!-- Outras opções de categoria -->
   </select>
 
   <label for="valorRec">Valor da Receita:</label>
-  <input type="text"  name="valorRec">
+  <input type="text" name="valorRec" class="decimal-input" onInput="mascaraMoeda(event);">
 
   <label for="dataRecebe">Validade do Recebimento:</label>
   <input type="date" id="dataRecebe" name="dataRecebe" min="<?php echo $umAnoAtras; ?>" max="<?php echo $umAnoFrente; ?>" required>
@@ -102,13 +120,13 @@ $umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
   <option value='0'>Valor único</option>
   <?php
 
-  $recebe = 1;
+  $recebe = 0;
 
-  for ($i=0; $i < 47; $i++) {
+  for ($i=0; $i < 120; $i++) {
 
     $recebe++;
 
-    echo "<option value='$recebe'>$recebe</option>";
+    echo "<option value='$recebe'>$recebe vezes</option>";
   }
 
   ?>
@@ -127,4 +145,34 @@ $umAnoFrente = date( 'd/m/Y', strtotime('+1 year'));
 
 
 </body>
+<script>
+
+$(document).ready(function() {
+    $('.decimal-input').autoNumeric('init', {
+      decimalCharacter: ',',
+      digitGroupSeparator: '.',
+      decimalPlaces: 2,
+      currencySymbol: '',
+      unformatOnSubmit: true
+    });
+  });
+
+  function mascaraMoeda(event) {
+    const onlyDigits = event.target.value
+      .split("")
+      .filter(s => /\d/.test(s))
+      .join("")
+      .padStart(3, "0")
+    const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2)
+    event.target.value = maskCurrency(digitsFloat)
+  }
+
+  function maskCurrency(valor, locale = 'pt-BR', currency = 'BRL') {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency
+    }).format(valor)
+  }
+
+</script>
 </html>

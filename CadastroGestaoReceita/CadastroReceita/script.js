@@ -1,22 +1,27 @@
-// String.prototype.reverse = function(){
-//     return this.split('').reverse().join('');
-//   };
 
-//   function mascaraMoeda(campo,evento){
-//     var tecla = (!evento) ? window.event.keyCode : evento.which;
-//     var valor  =  campo.value.replace(/[^\d]+/gi,'').reverse();
-//     var resultado  = "";
-//     var mascara = "##.###.###.###,##".reverse();
-//     for (var x=0, y=0; x<mascara.length && y<valor.length;) {
-//       if (mascara.charAt(x) != '#') {
-//         resultado += mascara.charAt(x);
-//         x++;
-//       } else {
-//         resultado += valor.charAt(y);
-//         y++;
-//         x++;
-//       }
-//     }
-//     campo.value = resultado.reverse();
-//   }
+$(document).ready(function() {
+    $('.decimal-input').autoNumeric('init', {
+      decimalCharacter: ',',
+      digitGroupSeparator: '.',
+      decimalPlaces: 2,
+      currencySymbol: '',
+      unformatOnSubmit: true
+    });
+  });
 
+  function mascaraMoeda(event) {
+    const onlyDigits = event.target.value
+      .split("")
+      .filter(s => /\d/.test(s))
+      .join("")
+      .padStart(3, "0")
+    const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2)
+    event.target.value = maskCurrency(digitsFloat)
+  }
+
+  function maskCurrency(valor, locale = 'pt-BR', currency = 'BRL') {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency
+    }).format(valor)
+  }
