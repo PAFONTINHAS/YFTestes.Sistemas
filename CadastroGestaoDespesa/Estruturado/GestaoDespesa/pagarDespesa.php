@@ -1,43 +1,39 @@
 <?php
+
 require_once '../../../conexao/banco.php';
 
-if (isset($_POST['id'])) {
-    $ids = $_POST['id'];
+// Verificar se a requisição é do tipo POST
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Verificar se os parâmetros foram recebidos corretamente
+    if (isset($_POST["id"]) && isset($_POST["dataPagamento"])) {
+        // Obter os valores dos parâmetros
+        $idDespesa = $_POST["id"];
+        $dataPagamento = $_POST["dataPagamento"];
 
-    // Separa os IDs em um array
-    $idArray = explode(',', $ids);
+        //Conversão da data de pagamento para os sistema americano
+        $dataReal = date("Y-m-d", strtotime(str_replace('/', '-', $dataPagamento)));
 
-    // Itera sobre os IDs e realiza a atualização no banco de dados
-    foreach ($idArray as $id) {
-        // Prepara a instrução SQL de atualização
-        $sql = "UPDATE caddesp SET pago = 1 WHERE id = ?";
+        // Operação de subtração da parcela
+        $query = "SELECT parcela FROM caddesp WHERE id = '$idDespesa'";
+        $result = $conn->query($query);
+        $dados = $result->fetch_assoc();
+        $parcelaAtual = $dados['parcela'];
+        $novaParcela = $parcelaAtual - 1;
 
-        // Prepara a declaração
-        $stmt = $conn->prepare($sql);
+        // Atualize a despesa no banco de dados com a data de pagamento fornecida
+        $sql = "UPDATE caddesp SET data_pagamento = '$dataReal', pago = 1, parcela = '$novaParcela' WHERE id = '$idDespesa'";
 
-        // Vincula o parâmetro de ID à declaração
-        $stmt->bind_param('i', $id);
-
-        // Executa a declaração
-        $stmt->execute();
-
-        // Verifica se ocorreu algum erro na execução
-        if ($stmt->errno) {
-            echo "Erro ao atualizar despesa: " . $stmt->error;
-            $stmt->close();
-            $conn->close();
-            exit(); // Encerra o script em caso de erro
+        if ($conn->query($sql) === TRUE) {
+            echo "Despesa paga com sucesso.";
+        } else {
+            echo "Erro ao pagar a despesa: " . $conn->error;
         }
 
-        // Fecha a declaração
-        $stmt->close();
+        $conn->close();
+    } else {
+        echo "Parâmetros inválidos.";
     }
-
-    // Fecha a conexão com o banco de dados
-    $conn->close();
-
-    echo "Despesa marcada como paga com sucesso.";
 } else {
-    echo "Nenhum ID definido.";
+    echo "Requisição inválida.";
 }
 ?>

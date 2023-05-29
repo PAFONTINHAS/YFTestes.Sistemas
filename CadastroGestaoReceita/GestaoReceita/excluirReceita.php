@@ -1,6 +1,7 @@
 <?php
 require_once '../../conexao/banco.php';
 
+
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
 
@@ -16,9 +17,10 @@ if (isset($_POST['id'])) {
     // Executa a declaração
     if ($stmt->execute()) {
         // Verifica se a exclusão foi bem-sucedida
-        echo "Despesa excluída com sucesso.";
+        echo "receita excluída com sucesso.";
+
     } else {
-        echo "Falha ao excluir a despesa. Erro: " . $stmt->error;
+        echo "Falha ao excluir a receita. Erro: " . $stmt->error;
     }
 
 

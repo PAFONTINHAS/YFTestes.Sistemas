@@ -132,7 +132,7 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
 
   <label for="parcelas">Parcela:</label>
   <select id="parcelas" name="parcelas">
-  <option value='0'>Valor único</option>
+  <option value='1'>Valor único</option>
   <?php
 
   $parcela = 1;

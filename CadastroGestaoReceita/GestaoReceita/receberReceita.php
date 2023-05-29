@@ -1,43 +1,42 @@
 <?php
+
 require_once '../../conexao/banco.php';
 
-if (isset($_POST['id'])){
-    $ids = $_POST['id'];
 
-    // Separa os IDs em um array
-    $idArray = explode(',', $ids);
+// Verificar se a requisição é do tipo POST
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Verificar se os parâmetros foram recebidos corretamente
+    if (isset($_POST["id"]) && isset($_POST["dataRecebimento"])) {
+        // Obter os valores dos parâmetros
+        $idReceita = $_POST["id"];
+        $dataRecebimento = $_POST["dataRecebimento"];
 
-    // Itera sobre os IDs e realiza a atualização no banco de dados
-    foreach ($idArray as $id) {
-        // Prepara a instrução SQL de atualização
-        $sql = "UPDATE cadrec SET recebido = 1 WHERE id = ?";
+        //Conversão da data de recebimento para o sistema americano de datas
+        $dataRecEN = date("Y-m-d", strtotime(str_replace('/', '-', $dataRecebimento)));
 
-        // Prepara a declaração
-        $stmt = $conn->prepare($sql);
 
-        // Vincula o parâmetro de ID à declaração
-        $stmt->bind_param('i', $id);
+        // Operação de subtração da repetição
+        $query = "SELECT repete FROM cadrec WHERE id = '$idReceita'";
+        $result = $conn->query($query);
+        $dados = $result->fetch_assoc();
+        $RepeticaoAtual = $dados['repete'];
+        $novaRepeticao = $RepeticaoAtual - 1;
 
-        // Executa a declaração
-        $stmt->execute();
 
-        // Verifica se ocorreu algum erro na execução
-        if ($stmt->errno) {
-            echo "Erro ao receber receita: " . $stmt->error;
-            $stmt->close();
-            $conn->close();
-            exit(); // Encerra o script em caso de erro
+        // Atualize a receita no banco de dados com a data de recebimento fornecida
+        $sql = "UPDATE cadrec SET data_recebimento = '$dataRecEN', repete = '$novaRepeticao', recebido = 1 WHERE id = '$idReceita'";
+
+        if ($conn->query($sql) === TRUE) {
+            echo "receita recebida com sucesso.";
+        } else {
+            echo "Erro ao receber a receita: " . $conn->error;
         }
 
-        // Fecha a declaração
-        $stmt->close();
+        $conn->close();
+    } else {
+        echo "Parâmetros inválidos.";
     }
-
-    // Fecha a conexão com o banco de dados
-    $conn->close();
-
-    echo "Receita marcada como recebida com sucesso.";
 } else {
-    echo "Nenhum ID definido.";
+    echo "Requisição inválida.";
 }
 ?>

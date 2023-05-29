@@ -7,7 +7,7 @@ if(isset($_POST['Cadastrar'])){
     $tipoReceita = $_POST["TipoReceita"];
     $tipoRecebe = $_POST["TipoRecebe"];
     $valorRec = $_POST["valorRec"];
-    $dataRecebe = $_POST["dataRecebe"];
+    $validade = $_POST["validade"];
     $repete = $_POST["repete"];
     $infocomp = $_POST["infoComplementares"];
 
@@ -27,7 +27,7 @@ if(isset($_POST['Cadastrar'])){
 
 
 
-        $sql = "INSERT INTO cadrec(tiporec, tiporecebe, valorrec, datarecebe, repete, infocomp) VALUES ('$tipoReceita','$tipoRecebe','$valorRecDecimal','$dataRecebe','$repete', '$infocomp')";
+        $sql = "INSERT INTO cadrec(tiporec, tiporecebe, valorrec, validade, repete, infocomp) VALUES ('$tipoReceita','$tipoRecebe','$valorRecDecimal','$validade','$repete', '$infocomp')";
 
         $query = mysqli_query($conn, $sql);
 

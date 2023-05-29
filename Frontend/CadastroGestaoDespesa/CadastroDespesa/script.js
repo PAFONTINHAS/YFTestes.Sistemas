@@ -24,3 +24,7 @@ $(document).ready(function() {
       currency
     }).format(valor)
   }
+
+  /////////
+
+  

@@ -71,6 +71,12 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
     border-radius:10px;
 
   }
+  .botaodir{
+    position:absolute;
+    top:83%;
+    left:36%;
+    width:29%;
+  }
 </style>
 
 </head>
@@ -95,7 +101,7 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
 </select>
 
 
-  <label for="TipoRecebe">Tipo de Recebimento</label>
+  <label for="TipoRecebe">Forma de Recebimento</label>
   <select id="TipoRecebe" name="TipoRecebe">
     <option> Selecionar</option>
     <option value="Dinheiro">Dinheiro</option>
@@ -113,14 +119,14 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
   <input type="text" name="valorRec" class="decimal-input" onInput="mascaraMoeda(event);">
 
   <label for="dataRecebe">Validade do Recebimento:</label>
-  <input type="date" id="dataRecebe" name="dataRecebe" min="<?php echo $umAnoAtras; ?>" max="<?php echo $umAnoFrente; ?>" required>
+  <input type="date" id="validade" name="validade" min="<?php echo $umAnoAtras; ?>" max="<?php echo $umAnoFrente; ?>" required>
 
   <label for="repete">Tipo de Repetição</label>
   <select id="repete" name="repete">
   <option value='0'>Valor único</option>
   <?php
 
-  $recebe = 0;
+  $recebe = 1;
 
   for ($i=0; $i < 120; $i++) {
 
@@ -140,7 +146,7 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
   <button type="submit" name = "Cadastrar"> Cadastrar Receita</button>
 </form>
 
-<button onclick ="location.href='../GestaoReceita/GestaoReceita.php'">Gestão de Receitas</button>
+<button onclick ="location.href='../GestaoReceita/GestaoReceita.php'" class= "botaodir">Gestão de Receitas</button>
 
 
 
