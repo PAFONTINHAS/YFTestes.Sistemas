@@ -23,6 +23,11 @@ if ($result->num_rows > 0) {
 
 
 </head>
+<header>
+<label for="mes">Selecione o mês:</label>
+<input type="month" id="mes" onchange="buscarDespesasPendentes()">
+
+</header>
 <body>
     <table class='tabela-despesas'>
         <tr>
@@ -40,21 +45,25 @@ if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
 
             $pagoClass = ($row["pago"] == 1) ? "Sim" : "Não";
+            
 
-            [$categoria, $pagamento, $parcela,$imovelAssoc, $valorDespFormatado, $vencimentoBR  ] = organizacao($row["parcela"], $row["categoria"], $row["formapag"], $row["imovelassoc"] , $row["valor"], $row['vencimento']);
+            [$categoria, $pagamento, $parcela, $imovelAssoc, $valorDespFormatado, $vencimentoBR  ] = organizacao($row["categoria"],$row["formapag"],  $row["parcela"], $row["imovelassoc"] , $row["valor"], $row['vencimento']);
 
-
-            echo "<tr id='linha' onclick=\"abrirModal(this)\" class=\"$pagoClass\" data-id=\"" . $row["id"] . "\">
+            echo "<tr id='linha' onclick=\"abrirModal(this)\" class=\"$pagoClass\" data-id=\"" . $id . "\">
                 <td>" . $row["nome"] . "</td>
                 <td>" . $categoria . "</td>
                 <td> R$ " . $valorDespFormatado . "</td>
-                <td>" . $pagamento. "</td>
                 <td>" . $parcela . "</td>
+                <td>" . $pagamento. "</td>
                 <td>" . $imovelAssoc . "</td>
                 <td>" . $vencimentoBR . "</td>
                 <td class=\"pago-col\">" . $pagoClass . "</td>
                 <td>" . $row["infocomp"] . "</td>
             </tr>";
+
+
+
+
         }
 
         echo "</tr>";
@@ -114,7 +123,7 @@ if ($result->num_rows > 0) {
    <!-- Modal para despesas pagas -->
 <div id="modalDespesaPaga" class="modal" data-id="">
     <div class="modal-conteudo">
-        <span class="fechar" onclick="fecharModalDespesaPaga()">&times;</span>
+        <span class="fechar" onclick="fecharModalDP()">&times;</span>
         <h2 id="modalTituloPaga"></h2>
         <p>Categoria: <span id="modalCategoriaPaga"></span></p>
         <p>Valor: R$ <span id="modalValorPaga"></span></p>
@@ -132,7 +141,7 @@ if ($result->num_rows > 0) {
 <!-- Modal para despesas não pagas -->
 <div id="modalDespesaNaoPaga" class="modal" data-id="">
     <div class="modal-conteudo">
-        <span class="fechar" onclick="fecharModalDespesaNaoPaga()">&times;</span>
+        <span class="fechar" onclick="fecharModalDNP()">&times;</span>
         <h2 id="modalTituloNaoPaga"></h2>
         <p>Categoria: <span id="modalCategoriaNaoPaga"></span></p>
         <p>Valor: R$ <span id="modalValorNaoPaga"></span></p>

@@ -1,0 +1,526 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+html {
+  position: fixed;
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    max-height: 100vh;
+    max-width: 99.1vw;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+header{
+
+    background-color: #050023;
+    color: white;
+    text-align: center;
+    width: 100vw;
+    height: 100px;
+    padding: 30px;
+    display: flex;
+    justify-content: space-around;
+    position: sticky;
+
+}
+
+.profile-details {
+
+}
+
+.sidebar{
+  position: absolute;
+  top: 100px;
+  left: 0;
+  height: 150%;
+  width: 270px;
+  background: #11101d;
+  z-index: 100;
+  transition: all 0.5s ease;
+}
+
+.sidebar.close{
+  width: 78px;
+}
+.sidebar .logo-details{
+  height: 60px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.sidebar .logo-details i{
+  font-size: 30px;
+  color: #fff;
+  height: 50px;
+  min-width: 78px;
+  text-align: center;
+  line-height: 50px;
+}
+.sidebar .logo-details .logo_name{
+  font-size: 22px;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.3s ease;
+  transition-delay: 0.1s;
+}
+.sidebar.close .logo-details .logo_name{
+  transition-delay: 0s;
+  opacity: 0;
+  pointer-events: none;
+}
+.sidebar .nav-links{
+  height: 100%;
+  padding: 30px 0 150px 0;
+  overflow: auto;
+}
+.sidebar.close .nav-links{
+  overflow: visible;
+}
+.sidebar .nav-links::-webkit-scrollbar{
+  display: none;
+}
+.sidebar .nav-links li{
+  position: relative;
+  list-style: none;
+  transition: all 0.4s ease;
+}
+.sidebar .nav-links li:hover{
+  background: #1d1b31;
+}
+.sidebar .nav-links li .iocn-link{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sidebar.close .nav-links li .iocn-link{
+  display: block
+}
+.sidebar .nav-links li i{
+  height: 50px;
+  min-width: 78px;
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.sidebar .nav-links li.showMenu i.arrow{
+  transform: rotate(-180deg);
+}
+.sidebar.close .nav-links i.arrow{
+  display: none;
+}
+.sidebar .nav-links li a{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.sidebar .nav-links li a .link_name{
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+  transition: all 0.4s ease;
+}
+.sidebar.close .nav-links li a .link_name{
+  opacity: 0;
+  pointer-events: none;
+}
+.sidebar .nav-links li .sub-menu{
+  padding: 6px 6px 14px 80px;
+  margin-top: 0px;
+  background: #1d1b31;
+  display: none;
+}
+.sidebar .nav-links li.showMenu .sub-menu{
+  display: block;
+}
+.sidebar .nav-links li .sub-menu a{
+  color: #fff;
+  font-size: 15px;
+  padding: 5px 0;
+  white-space: nowrap;
+  opacity: 3;
+  transition: all 0.3s ease;
+}
+.sidebar .nav-links li .sub-menu a:hover{
+  opacity: 1;
+}
+.sidebar.close .nav-links li .sub-menu{
+  position: absolute;
+  left: 100%;
+  top: -10px;
+  margin-top: 0;
+  padding: 10px 20px;
+  border-radius: 0 6px 6px 0;
+  opacity: 0;
+  display: block;
+  pointer-events: none;
+  transition: 0s;
+}
+.sidebar.close .nav-links li:hover .sub-menu{
+  top: 0;
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.4s ease;
+}
+.sidebar .nav-links li .sub-menu .link_name{
+  display: none;
+}
+.sidebar.close .nav-links li .sub-menu .link_name{
+  font-size: 18px;
+  opacity: 1;
+  display: block;
+}
+.sidebar .nav-links li .sub-menu.blank{
+  opacity: 1;
+  pointer-events: auto;
+  padding: 3px 20px 6px 16px;
+  opacity: 0;
+  pointer-events: none;
+}
+.sidebar .nav-links li:hover .sub-menu.blank{
+  top: 50%;
+  transform: translateY(-50%);
+}
+.sidebar .profile-details{
+  position: fixed;
+  bottom: 0;
+  height: 7%;
+  width: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1d1b31;
+  padding: 12px 0;
+  transition: all 0.5s ease;
+}
+.sidebar.close .profile-details{
+  background: none;
+}
+.sidebar.close .profile-details{
+  width: 78px;
+}
+.sidebar .profile-details .profile-content{
+  display: flex;
+  align-items: center;
+}
+.sidebar .profile-details img{
+  height: 52px;
+  width: 52px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin: 0 14px 0 12px;
+  background: #1d1b31;
+  transition: all 0.5s ease;
+}
+.sidebar.close .profile-details img{
+  padding: 10px;
+}
+.sidebar .profile-details .profile_name,
+.sidebar .profile-details .job{
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.sidebar.close .profile-details i,
+.sidebar.close .profile-details .profile_name,
+.sidebar.close .profile-details .job{
+  display: none;
+}
+.sidebar .profile-details .job{
+  font-size: 12px;
+}
+.home-section{
+  position: relative;
+  background: #E4E9F7;
+  height: 100vh;
+  left: 260px;
+  width: calc(100% - 260px);
+  /* transition: all 0.5s ease; */
+}
+.sidebar.close ~ .home-section{
+  left: 78px;
+  width: calc(100% - 78px);
+} 
+ .home-section .home-content{
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+.home-section .home-content .bx-menu,
+.home-section .home-content .text{
+  color: #11101d;
+  font-size: 35px;
+}
+.home-section .home-content .bx-menu{
+  margin: 0 15px;
+  cursor: pointer;
+}
+.home-section .home-content .text{
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* INPUTS */
+.CadastroReceita {
+    position: relative;
+    right: 25px;
+    max-width: 700px;
+    width: 350%;
+    margin: 0 0 auto;
+    padding: 60px;
+    background-color: #E4E9F7;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.0);
+    text-align: center;
+}
+
+  
+.cadastro-group {
+    position: relative;
+    top: -19px;
+    margin-bottom: 20px;
+    text-align: left;
+}  
+
+.CadastroReceita h1 {
+  position: relative;
+    left: -40px;
+    top: -44px;
+    width:300px;
+    height:10px;  
+}
+
+
+.cadastro-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .cadastro-group select{
+    height: 50px;   
+  }
+  
+  .cadastro-group select[id="TipoReceita"],
+  .cadastro-group select[id="TipoRecebe"],
+  .cadastro-group input[type="text"],
+  .cadastro-group input[type="date"],
+  .cadastro-group select[id="repete"],
+  .cadastro-group textarea[id="infoComplementares"]
+  .cadastro-group textarea {
+    
+    max-width: 600px;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid rgb(24, 31, 61);
+    border-radius: 4px;
+    background: #ffffff;
+  }
+
+.cadastro-group textarea {
+    border: 1px solid rgb(24, 31, 61);
+    border-radius: 4px;
+    max-width: 1180px;
+    width: 900%;
+    height: 230px;
+    background: #ffffff;
+}
+.cadastro-group textarea[id="infoComplementares"],
+.cadastro-group label[id="infoComplementares"],
+.cadastro-group valorRec{
+  position: relative;
+  top: -75px;
+  left: 0px;
+}
+
+.cadastro-group select[id="TipoReceita"],
+.cadastro-group label[id="labReceita"],
+.cadastro-group  TipoReceita{
+  position: relative;
+  top: 87px;
+}
+
+.cadastro-group select[id="TipoRecebe"],
+.cadastro-group label[id="labRecebe"],
+.cadastro-group  TipoRecebe{
+  position: relative;
+  top: -10px;
+  left: 600px;
+}
+
+.cadastro-group input[type="text"],
+.cadastro-group label[id="labValor"],
+.cadastro-group valorRec{
+  position: relative;
+  top: 5px;
+}
+
+.cadastro-group input[type="date"],
+.cadastro-group label[id="labData"],
+.cadastro-group valorRec{
+  position: relative;
+  top: -92px;
+  left: 600px;
+}
+
+.cadastro-group select[id="repete"],
+.cadastro-group label[id="labRepete"],
+.cadastro-group valorRec{
+  position: relative;
+  top: -85px;
+  left: 0px;
+  max-width: 1180px;
+  width: 900%;
+}
+
+.botao button {
+    position: relative;
+    right: -580px;
+    top: -743px;
+    padding: 11px 45px;
+    background-color: #353746;
+    border: none;
+    color: #ffffff;
+    border-radius: 15px;
+    cursor: pointer;
+}
+  
+.botao button:hover {
+    background-color: #050023;
+    color: #fff;
+}
+
+.botao2 button {
+    position: relative;
+    right: -780px;
+    top: -781px;
+    padding: 11px 45px;
+    background-color: #353746;
+    border: none;
+    color: #ffffff;
+    border-radius: 15px;
+    cursor: pointer;
+}
+  
+.botao2 button:hover {
+    background-color: #050023;
+    color: #ffffff;
+}
+
+
+
+
+
+@media (max-width: 450px) {
+    .sidebar.close .nav-links li .sub-menu{
+      display: none;
+    }
+    .sidebar{
+      width: 78px;
+    }
+    .sidebar.close{
+      width: 0;
+    }
+    .home-section{
+      left: 78px;
+      width: calc(100% - 78px);
+      z-index: 100;
+    }
+    .sidebar.close ~ .home-section{
+      width: 100%;
+      left: 0;
+    }
+    
+    .cadastro-group label[id="infoComplementares"],
+    .cadastro-group textarea[id="infoComplementares"]{
+      display: none;
+    }
+  
+    .botao2 button {
+      display: none;
+    }
+
+    .botao button {
+        position: relative;
+        top: -110px;
+        right: -122px;
+        padding: 61px 112px;
+    }
+        
+    .CadastroReceita {
+        position: relative;
+        right: 30px;
+        max-width: 700px;
+        width: 350%;
+        margin: 0 0 auto;
+        padding: 60px;
+        background-color: #E4E9F7;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.0);
+        text-align: center;
+    }
+    .cadastro-group select[id="TipoReceita"],
+    .cadastro-group select[id="TipoRecebe"],
+    .cadastro-group input[type="text"],
+    .cadastro-group input[type="date"],
+    .cadastro-group select[id="repete"],
+    .cadastro-group textarea[id="infoComplementares"]
+    .cadastro-group textarea {
+        
+        right: -900;
+        max-width: 200px;
+        width: 100%;
+        height: 40px;
+        padding: 10px;
+        border: 1px solid rgb(24, 31, 61);
+        border-radius: 4px;
+    }
+  }
+
+
+
+
+
+
+
+@media (max-width:1300px) {  
+    .botao button {
+        position: relative;
+        right: -399px;
+        top: -625px;
+        padding: 11px 35px;
+        background-color: #f8f8f8;
+        border: 1px solid rgb(24, 31, 61);
+        color: #000000;
+        border-radius: 15px;
+        cursor: pointer;
+    }
+      
+    .botao button:hover {
+        background-color: #052270;
+    }
+    
+    .botao2 button {
+        position: relative;
+        right: -399px;
+        top: -710px;
+        padding: 11px 35px;
+        background-color: #f8f8f8;
+        border: 1px solid rgb(24, 31, 61);
+        color: #000000;
+        border-radius: 15px;
+        cursor: pointer;
+    }
+      
+    .botao2 button:hover {
+        background-color: #052270;
+    }
+}

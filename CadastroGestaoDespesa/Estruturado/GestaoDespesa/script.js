@@ -54,12 +54,12 @@ function abrirModal(row) {
     xhr.send();
 }
 
-function fecharModalDespesaPaga() {
+function fecharModalDP() {
     var modalDespesaPaga = document.getElementById("modalDespesaPaga");
     modalDespesaPaga.style.display = "none"; // Ocultar o modal de despesas pagas
 }
 
-function fecharModalDespesaNaoPaga() {
+function fecharModalDNP() {
     var modalDespesaNaoPaga = document.getElementById("modalDespesaNaoPaga");
     modalDespesaNaoPaga.style.display = "none"; // Ocultar o modal de despesas não pagas
 }
@@ -146,4 +146,61 @@ function exibirCalendario() {
       locale: "br", // Idioma do calendário
       disableMobile: true // Desabilita o calendário em dispositivos móveis
     }).open();
+  }
+
+
+
+
+
+
+
+  function buscarDespesasPendentes() {
+    // Obtenha o valor do mês selecionado
+    var mesSelecionado = document.getElementById('mes').value;
+
+    // Crie uma instância do objeto XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+
+    // Configure a função de callback para manipular a resposta
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // A resposta foi recebida com sucesso
+        var despesasPendentes = JSON.parse(xhr.responseText);
+
+        // Atualize a tabela com as despesas pendentes
+        atualizarTabelaDespesas(despesasPendentes);
+      }
+    };
+
+    // Envie a solicitação AJAX para o servidor
+    xhr.open('GET', 'buscarDespesasPendentes.php?mes=' + mesSelecionado, true);
+    xhr.send();
+  }
+
+  function atualizarTabelaDespesas(despesas) {
+    var tabelaDespesas = document.getElementById('tabela-despesas');
+    var tbody = tabelaDespesas.getElementsByTagName('tr')[0];
+
+    // Limpe o conteúdo atual da tabela
+    tbody.innerHTML = '';
+
+    // Adicione as linhas da tabela com as despesas pendentes
+    for (var i = 0; i < despesas.length; i++) {
+      var despesa = despesas[i];
+
+      var tr = document.createElement('tr');
+      var tdDescricao = document.createElement('td');
+      var tdValor = document.createElement('td');
+      var tdVencimento = document.createElement('td');
+
+      tdDescricao.textContent = despesa.descricao;
+      tdValor.textContent = despesa.valor;
+      tdVencimento.textContent = despesa.vencimento;
+
+      tr.appendChild(tdDescricao);
+      tr.appendChild(tdValor);
+      tr.appendChild(tdVencimento);
+
+      tbody.appendChild(tr);
+    }
   }

@@ -1,6 +1,6 @@
 <?php
 require_once '../../../conexao/banco.php';
-function organizacao($parcela,$categoria,$pagamento,$imovelAssoc,$valor, $vencimento){
+function organizacao($categoria, $pagamento, $parcela, $imovelAssoc, $valor, $vencimento){
 
     // Alterações da Parcela
    if($parcela == 0){
@@ -57,11 +57,11 @@ function organizacao($parcela,$categoria,$pagamento,$imovelAssoc,$valor, $vencim
     elseif($pagamento == "CartaoDebito"){
         $pagamento = "Cartão de Débito";
     }
-    elseif($categoria == "Trasferencia"){
-        $categoria = "Tranferência Bancária";
+    elseif($pagamento == "Transferencia"){
+        $pagamento = "Tranferência Bancária";
     }
-    elseif($categoria == "Boleto"){
-        $categoria = "Boleto Bancário";
+    elseif($pagamento == "Boleto"){
+        $pagamento = "Boleto Bancário";
     }
 
 
@@ -89,8 +89,6 @@ function organizacao($parcela,$categoria,$pagamento,$imovelAssoc,$valor, $vencim
     $vencimentoBR = date("d/m/Y", strtotime(str_replace('-', '/', $vencimento)));
 
 
-    return [$categoria, $pagamento, $parcela,$imovelAssoc, $valorDespFormatado, $vencimentoBR];
-
-
+    return [$categoria, $pagamento, $parcela, $imovelAssoc, $valorDespFormatado, $vencimentoBR];
 
 }

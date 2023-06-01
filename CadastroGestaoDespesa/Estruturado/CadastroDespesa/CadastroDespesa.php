@@ -155,7 +155,7 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
   <button type="submit" name = "Cadastrar"> Cadastrar Despesa</button>
 </form>
 
-<form action="../GestaoDespesa/GestaoDespesa.php"><button type="submit">Gestão de Despesas</button></form>
+<button onclick = "location.href='../GestaoDespesa/GestaoDespesa.php'">Gestão de Despesas</button>
 
 
 

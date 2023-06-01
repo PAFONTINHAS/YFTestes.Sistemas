@@ -4,24 +4,10 @@ html {
   position: fixed;
 }
 
-datalist {
-  position: absolute;
-  background-color: rgb(224, 34, 34);
-  border: 100px solid rgb(5, 5, 48);
-  border-radius: 0 0 5px 5px;
-  border-top: none;
-  font-family: sans-serif;
-  width: 3500px;
-  padding: 50px;
-  max-height: 100rem;
-  overflow-y: auto
-  
-}
-
 option {
   background-color: white;
   padding: 4px;
-  color: blue;
+  color: rgb(0, 0, 0);
   margin-bottom: 1px;
    font-size: 18px;
   cursor: pointer;
@@ -53,10 +39,6 @@ header{
     display: flex;
     justify-content: space-around;
     position: sticky;
-
-}
-
-.profile-details {
 
 }
 
@@ -275,7 +257,7 @@ header{
 .sidebar.close ~ .home-section{
   left: 78px;
   width: calc(100% - 78px);
-} 
+}
  .home-section .home-content{
   height: 60px;
   display: flex;
@@ -317,7 +299,7 @@ header{
 
 /* FORMULARIO */
 
-  
+
   .container {
     max-width: 500px;
     margin: 0 0 auto;
@@ -326,12 +308,24 @@ header{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.0);
     text-align: center;
   }
-  
+
+  .form-group select {
+    height: 40px;
+    border: 1px solid rgb(24, 31, 61);
+    border-radius: 4px;
+  }
+  .form-group2 select {
+    height: 40px;
+    border: 1px solid rgb(24, 31, 61);
+    border-radius: 4px;
+  }
+
+
   .form-group {
     margin-bottom: 20px;
     text-align: left;
   }
-  
+
   .form-group2 {
     margin-bottom: 20px;
     text-align: left;
@@ -342,21 +336,22 @@ header{
     margin-bottom: 5px;
     font-weight: bold;
   }
-  
+
   .form-group input[type="text"],
   .form-group input[type="number"],
   .form-group input[type="date"],
+  .form-group select[id="Categoria"]
   .form-group date {
     width: 100%;
     padding: 10px;
     border: 1px solid rgb(24, 31, 61);
     border-radius: 4px;
   }
-  
+
   .form-group date {
     height: 100px;
   }
-  
+
   .form-group input[id="observaçoes"],
   .form-group observaçoes {
       padding: 20px;
@@ -367,9 +362,9 @@ header{
     border-radius: 4px;
   }
 
-  .form-group textarea[id="name"],
+  .form-group input[id="name"],
   .form-group name {
-      padding: 10px px;
+      width: 1410px;
   }
 
   .form-group input[id="valordesp"],
@@ -388,12 +383,13 @@ header{
       top: -85px;
   }
 
-  .form-group input[id="Categoria"],
+  .form-group select[id="Categoria"],
   .form-group label[id="categorialabel"],
-  .form-group valordesp {
-      position: relative;
-      right: -0px;
-      top: -10.5rem;
+  .form-group Categoria {
+    position: relative;
+    right: -0px;
+    top: -10.5rem;
+    width: 100%;
   }
   /* FORMULARIO */
 
@@ -408,12 +404,12 @@ header{
     border-radius: 15px;
     cursor: pointer;
 }
-  
+
 .botao button:hover {
     background-color: #052270;
 }
 
- 
+
 .organiza{
     max-width: 500px;
     margin: 0 0 auto;
@@ -421,7 +417,7 @@ header{
     background-color: #E4E9F7;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.0);
     text-align: center;
-} 
+}
 
 .form-group2 {
   position: relative;
@@ -451,7 +447,10 @@ header{
   text-align: center;
 }
 
-.form-group2 textarea[id="formapagamento"],
+.form-group2 select[id="formapagamento"]{
+  width: 1410px;
+}
+.form-group2 select[id="formapagamento"],
 .form-group2 label[id="paglabel"],
 .form-group2 h1,
 .form-group2 formapagamento {
@@ -460,7 +459,11 @@ header{
     top: -160px;
 }
 
-.form-group2 input[id="parcelas"],
+.form-group2 select[id="parcelas"]{
+  width: 380px;
+}
+
+.form-group2 select[id="parcelas"],
 .form-group2 label[id="parcelaslabel"],
 .form-group2 parcelas {
     position: relative;
@@ -468,8 +471,11 @@ header{
     top: -160px;
 }
 
+.form-group2 select[id="associaçao"]{
+  width: 380px;
+}
 
-.form-group2 input[id="associaçao"],
+.form-group2 select[id="associaçao"],
 .form-group2 label[id="associaçaolabel"],
 .form-group2 parcelas {
     position: relative;
@@ -489,3 +495,16 @@ header{
   border: 1px solid rgb(88, 92, 110);
   border-radius: 4px;
 }
+
+
+/* MÁSCARA DE MOEDA */
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  margin-right: 5px;
+}
+

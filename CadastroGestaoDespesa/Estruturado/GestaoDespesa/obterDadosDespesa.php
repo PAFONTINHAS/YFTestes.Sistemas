@@ -24,9 +24,10 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
         $nomeDespesa = $dadosDespesa['nome'];
 
+        $infoComp = $dadosDespesa['infocomp'];
 
 
-        [$categoria, $pagamento, $parcela, $imovelAssoc, $valorDespFormatado, $vencimentoBR] = organizacao($dadosDespesa['parcela'], $dadosDespesa['categoria'], $dadosDespesa['formapag'], $dadosDespesa['imovelassoc'] , $dadosDespesa['valor'], $dadosDespesa['vencimento']);
+        [$categoria, $pagamento, $parcela, $imovelAssoc, $valorDespFormatado, $vencimentoBR] = organizacao($dadosDespesa["categoria"],$dadosDespesa["formapag"],  $dadosDespesa["parcela"], $dadosDespesa["imovelassoc"] , $dadosDespesa["valor"], $dadosDespesa['vencimento']);
 
 
         $dadosDespesa['categoria'] = $categoria;
