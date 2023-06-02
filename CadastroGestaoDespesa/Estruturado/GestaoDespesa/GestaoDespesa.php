@@ -49,7 +49,7 @@ if ($result->num_rows > 0) {
 
             [$categoria, $pagamento, $parcela, $imovelAssoc, $valorDespFormatado, $vencimentoBR  ] = organizacao($row["categoria"],$row["formapag"],  $row["parcela"], $row["imovelassoc"] , $row["valor"], $row['vencimento']);
 
-            echo "<tr id='linha' onclick=\"abrirModal(this)\" class=\"$pagoClass\" data-id=\"" . $id . "\">
+            echo "<tr id='linha' onclick=\"abrirModal(this)\" class=\"$pagoClass\" data-id=\"" . $row['id']. "\">
                 <td>" . $row["nome"] . "</td>
                 <td>" . $categoria . "</td>
                 <td> R$ " . $valorDespFormatado . "</td>
@@ -103,21 +103,8 @@ if ($result->num_rows > 0) {
 
 
             echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroDespesa/CadastroDespesa.php\'">Cadastrar nova despesa</button>';
-    }
-        else {
-            echo "Nenhum registro encontrado.";
-            echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroDespesa/CadastroDespesa.php\'">Cadastrar nova despesa</button>';
-
-        }
-
-        $consulta = "SELECT * FROM caddesp";
-        $consultafin = $conn->query($consulta);
-
-        if($consultafin->num_rows > 0){
-
-
-        ?>
-
+  
+    ?>
 
 
    <!-- Modal para despesas pagas -->
@@ -156,11 +143,13 @@ if ($result->num_rows > 0) {
         <button class="botao-pagar" name="pagar" onclick="pagarDespesa()">Pagar</button>
         <button class="botao-excluir" name="excluir" onclick="excluirDespesa()">Excluir</button>
     </div>
-</div>
+    </div>
 
 <?php }
-else{
-    return;
+else {
+    echo "Nenhum registro encontrado.";
+    echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroDespesa/CadastroDespesa.php\'">Cadastrar nova despesa</button>';
+
 }
 
 ?>

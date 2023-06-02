@@ -20,6 +20,7 @@ CREATE TABLE caddesp(
     imovelassoc VARCHAR(100) NOT NULL,
     parcela INT NOT NULL,
     pago TINYINT NULL DEFAULT(0),
+    data_pagamento DATE NOT NULL,
     infocomp TEXT NULL
 );
 
@@ -29,9 +30,10 @@ CREATE TABLE cadrec(
     tiporec VARCHAR(100) NOT NULL,
     tiporecebe VARCHAR(100) NOT NULL,
     valorrec DECIMAL(10,2) NOT NULL,
-    datarecebe DATE NOT NULL,
+    validade DATE NOT NULL,
     recebido TINYINT NULL DEFAULT(0),
     repete INT NOT NULL,
+    data_recebimento DATE NOT NULL, 
     recrecebido DATE NULL,
     infocomp TEXT NULL
 );
