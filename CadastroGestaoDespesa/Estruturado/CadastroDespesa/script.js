@@ -24,3 +24,15 @@ $(document).ready(function() {
       currency
     }).format(valor)
   }
+
+
+
+function exibirCalendario() {
+  flatpickr(".calendario", {
+    dateFormat: "d/m/Y", // Formato da data
+    locale: "br", // Idioma do calendário
+    disableMobile: true // Desabilita o calendário em dispositivos móveis
+  }).open();
+}
+
+

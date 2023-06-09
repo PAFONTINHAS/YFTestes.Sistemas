@@ -15,8 +15,10 @@ function abrirModal(row) {
             var response = JSON.parse(this.responseText);
             var despesa = response.despesa;
             var dataPagamento = response.dataPagamento;
+            var novaParcela = response.novaParcela;
 
             if (despesa.pago === "Sim") {
+                
                 // Preencher os dados no modal de despesas pagas
                 document.getElementById("modalTituloPaga").textContent = despesa.nomeDespesa;
                 document.getElementById("modalCategoriaPaga").textContent = despesa.categoria;
@@ -27,6 +29,7 @@ function abrirModal(row) {
                 document.getElementById("modalDataVencimentoPaga").textContent = despesa.dataVencimento;
                 document.getElementById("modalPagoPaga").textContent = despesa.pago;
                 document.getElementById("modalDataPagamentoPaga").textContent = dataPagamento;
+                document.getElementById("modalNovaParcela").textContent = novaParcela;
                 document.getElementById("modalInformacoesComplementaresPaga").textContent = despesa.infoComp;
 
                 // Exibir o modal de despesas pagas
@@ -149,58 +152,3 @@ function exibirCalendario() {
   }
 
 
-
-
-
-
-
-  function buscarDespesasPendentes() {
-    // Obtenha o valor do mês selecionado
-    var mesSelecionado = document.getElementById('mes').value;
-
-    // Crie uma instância do objeto XMLHttpRequest
-    var xhr = new XMLHttpRequest();
-
-    // Configure a função de callback para manipular a resposta
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        // A resposta foi recebida com sucesso
-        var despesasPendentes = JSON.parse(xhr.responseText);
-
-        // Atualize a tabela com as despesas pendentes
-        atualizarTabelaDespesas(despesasPendentes);
-      }
-    };
-
-    // Envie a solicitação AJAX para o servidor
-    xhr.open('GET', 'buscarDespesasPendentes.php?mes=' + mesSelecionado, true);
-    xhr.send();
-  }
-
-  function atualizarTabelaDespesas(despesas) {
-    var tabelaDespesas = document.getElementById('tabela-despesas');
-    var tbody = tabelaDespesas.getElementsByTagName('tr')[0];
-
-    // Limpe o conteúdo atual da tabela
-    tbody.innerHTML = '';
-
-    // Adicione as linhas da tabela com as despesas pendentes
-    for (var i = 0; i < despesas.length; i++) {
-      var despesa = despesas[i];
-
-      var tr = document.createElement('tr');
-      var tdDescricao = document.createElement('td');
-      var tdValor = document.createElement('td');
-      var tdVencimento = document.createElement('td');
-
-      tdDescricao.textContent = despesa.descricao;
-      tdValor.textContent = despesa.valor;
-      tdVencimento.textContent = despesa.vencimento;
-
-      tr.appendChild(tdDescricao);
-      tr.appendChild(tdValor);
-      tr.appendChild(tdVencimento);
-
-      tbody.appendChild(tr);
-    }
-  }

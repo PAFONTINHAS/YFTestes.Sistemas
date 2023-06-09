@@ -4,6 +4,7 @@ require 'OrganizarDespesa.php';
 
 $sql = "SELECT * FROM caddesp";
 $result = $conn->query($sql);
+$contagem = 0;
 
 if ($result->num_rows > 0) {
 ?>
@@ -24,10 +25,9 @@ if ($result->num_rows > 0) {
 
 </head>
 <header>
-<label for="mes">Selecione o mês:</label>
-<input type="month" id="mes" onchange="buscarDespesasPendentes()">
-
+    <h1>ajsfdklasl</h1>
 </header>
+
 <body>
     <table class='tabela-despesas'>
         <tr>
@@ -44,10 +44,59 @@ if ($result->num_rows > 0) {
         <?php
         while ($row = $result->fetch_assoc()) {
 
+
+            $id = $row['id'];
+            $contagem ++;
+
+            $dataAtual = date("y-m-d");
+
             $pagoClass = ($row["pago"] == 1) ? "Sim" : "Não";
-            
+
+            $vencimento = $row['vencimento'];
 
             [$categoria, $pagamento, $parcela, $imovelAssoc, $valorDespFormatado, $vencimentoBR  ] = organizacao($row["categoria"],$row["formapag"],  $row["parcela"], $row["imovelassoc"] , $row["valor"], $row['vencimento']);
+
+
+            $vencimentoEN = date("Y-m-d", strtotime(str_replace('/','-', $vencimentoBR )));
+
+            $novaParcela = date("Y-m-d", strtotime($vencimentoEN . "-20 days"));
+
+            $parcelaAcima = date("Y-m-d", strtotime($vencimentoEN . "+1 days"));
+
+            // echo "A data Atual é: " . $dataAtual . "\n\n\n";
+            // echo "A data de vencimento é: " . $vencimentoEN . "\n\n\n";
+            // echo "A data da Nova Parcela é: " . $novaParcela . "\n\n\n";
+            // echo "A data da Parcela Acima é: " . $parcelaAcima . "\n\n\n";
+            // echo "<br>";
+            // echo "<br>";
+
+          // Converter as datas para objetos DateTime
+            $dataAtualObj = new DateTime($dataAtual);
+            $novaParcelaObj = new DateTime($novaParcela);
+            $parcelaAcimaObj = new DateTime($parcelaAcima);
+
+            // Verificar se a data atual está dentro do intervalo
+            if ($dataAtualObj >= $novaParcelaObj && $dataAtualObj < $parcelaAcimaObj) {
+                $pagoClass = "Não";
+                $sql = "UPDATE caddesp SET pago = 0 WHERE id = '$id'";
+                $resultQuery = $conn->query($sql);
+
+            }elseif($dataAtualObj != $novaParcelaObj && $dataAtual < $parcelaAcimaObj ){
+                if($row['pago'] == 1){
+                    $pagoClass = "Sim";
+                    $sql2 = "UPDATE caddesp SET pago = 1 WHERE id = '$id'";
+                    $resultQuery2 = $conn->query($sql2);
+                }
+                else{
+                    $pagoClass = "Não";
+                    $sql2 = "UPDATE caddesp SET pago = 0 WHERE id = '$id'";
+                    $resultQuery2 = $conn->query($sql2);
+                }
+
+            }
+            else{
+                return;
+            }
 
             echo "<tr id='linha' onclick=\"abrirModal(this)\" class=\"$pagoClass\" data-id=\"" . $row['id']. "\">
                 <td>" . $row["nome"] . "</td>
@@ -99,11 +148,13 @@ if ($result->num_rows > 0) {
 
         echo "<h2>Valor de Todas as Despesas: R$ " . $valorRealBr . "</h2>";
         echo "<h2>Valor de Todas as Despesas Pendentes: R$ " . $valorAPagarBR . "</h2>";
+        echo "<h2>Número de Registros: " . $contagem . " Despesas Cadastradas". "</h2>";
+
 
 
 
             echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroDespesa/CadastroDespesa.php\'">Cadastrar nova despesa</button>';
-  
+
     ?>
 
 
@@ -120,6 +171,7 @@ if ($result->num_rows > 0) {
         <p>Data de Vencimento: <span id="modalDataVencimentoPaga"></span></p>
         <p>Pago: <span id="modalPagoPaga"></span></p>
         <p>Data de Pagamento: <span id="modalDataPagamentoPaga"></span></p>
+        <p>Nova Parcela liberada dia:<span id="modalNovaParcela"></span></p>
         <p>Informações Complementares: <span id="modalInformacoesComplementaresPaga"></span></p>
         <button class="botao-excluir" name="excluir" onclick="excluirDespesa()">Excluir</button>
     </div>
@@ -138,7 +190,6 @@ if ($result->num_rows > 0) {
         <p>Data de Vencimento: <span id="modalDataVencimentoNaoPaga"></span></p>
         <p>Pago: <span id="modalPagoNaoPaga"></span></p>
         <p>Quer pagar ou já pagou? Insira a data aqui: <input id="modalDataPagamentoNaoPaga" class="calendario" type="text" name="dataPagamento" onclick="exibirCalendario()" autocomplete="off"></p>
-
         <p>Informações Complementares: <span id="modalInformacoesComplementaresNaoPaga"></span></p>
         <button class="botao-pagar" name="pagar" onclick="pagarDespesa()">Pagar</button>
         <button class="botao-excluir" name="excluir" onclick="excluirDespesa()">Excluir</button>

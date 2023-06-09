@@ -20,8 +20,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $parcelaAtual = $dados['parcela'];
         $novaParcela = $parcelaAtual - 1;
 
+        // operação de incremento da data de vencimento
+        $query2 = "SELECT vencimento FROM caddesp WHERE id = '$idDespesa'";
+        $resultado = $conn -> query($query2);
+        $dadoVencimento = $resultado->fetch_assoc();
+        $vencimentoAtual = $dadoVencimento['vencimento'];
+        $vencimentoAdd = date("Y-m-d", strtotime($vencimentoAtual . "+1 month"));
+
         // Atualize a despesa no banco de dados com a data de pagamento fornecida
-        $sql = "UPDATE caddesp SET data_pagamento = '$dataReal', pago = 1, parcela = '$novaParcela' WHERE id = '$idDespesa'";
+        $sql = "UPDATE caddesp SET data_pagamento = '$dataReal', pago = 1, parcela = '$novaParcela', vencimento = '$vencimentoAdd' WHERE id = '$idDespesa'";
 
         if ($conn->query($sql) === TRUE) {
             echo "Despesa paga com sucesso.";

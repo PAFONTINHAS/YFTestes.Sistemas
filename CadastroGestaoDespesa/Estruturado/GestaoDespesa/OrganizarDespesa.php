@@ -4,8 +4,8 @@ function organizacao($categoria, $pagamento, $parcela, $imovelAssoc, $valor, $ve
 
     // Alterações da Parcela
    if($parcela == 0){
-        $parcela = "Despesa Finalizada";
-        $pagamento = "Despesa Finalizada";
+        $parcela = " Despesa Finalizada";
+        $pagamento = " Despesa Finalizada";
 
     }
     elseif($parcela == 1 ){

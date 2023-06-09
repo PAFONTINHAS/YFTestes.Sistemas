@@ -26,9 +26,14 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
         $infoComp = $dadosDespesa['infocomp'];
 
+        $vencimento = $dadosDespesa['vencimento'];
 
         [$categoria, $pagamento, $parcela, $imovelAssoc, $valorDespFormatado, $vencimentoBR] = organizacao($dadosDespesa["categoria"],$dadosDespesa["formapag"],  $dadosDespesa["parcela"], $dadosDespesa["imovelassoc"] , $dadosDespesa["valor"], $dadosDespesa['vencimento']);
 
+
+        $novaParcela = date("Y-m-d", strtotime($vencimento . "-20 days"));
+
+        $parcelaReal = date("d/m/Y", strtotime($novaParcela . "today"));
 
         $dadosDespesa['categoria'] = $categoria;
         $dadosDespesa['valor'] = $valorDespFormatado;
@@ -48,10 +53,22 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
 
         // Agora você pode retornar os dados da despesa como uma resposta JSON
-        $response = array(
+        if($parcela != " Despesa Finalizada"){
+             $response = array(
             'despesa' => $dadosDespesa,
-            'dataPagamento' => $dataPagamentoBR // Inclua aqui a data de pagamento da despesa, se disponível
+            'dataPagamento' => $dataPagamentoBR, // Inclua aqui a data de pagamento da despesa, se disponível
+            'novaParcela' => $parcelaReal
         );
+        }else{
+            $dadosDespesa['dataVencimento'] = $parcela;
+            $parcelaReal = $parcela;
+            $dadosDespesa['infoComp'] = $parcela;
+            $response = array(
+                'despesa' => $dadosDespesa,
+                'dataPagamento' => $dataPagamentoBR, // Inclua aqui a data de pagamento da despesa, se disponível
+                'novaParcela' => $parcelaReal
+            );
+        }
 
         header('Content-Type: application/json');
         echo json_encode($response);
