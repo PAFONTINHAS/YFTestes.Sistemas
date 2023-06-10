@@ -14,6 +14,7 @@ function abrirModal(row) {
             var response = JSON.parse(this.responseText);
             var receita = response.receita;
             var dataRecebimento = response.dataRecebimento;
+            var novaRepeticao = response.novaRepeticao;
 
             if (receita.recebido === "Sim") {
                 // Preencher os dados no modal de despesas pagas
@@ -24,6 +25,7 @@ function abrirModal(row) {
                 document.getElementById("modalValidadeRecebida").textContent = receita.validade;
                 document.getElementById("modalRecebidoRecebida").textContent = receita.recebido;
                 document.getElementById("modalDataRecebimentoRecebida").textContent = dataRecebimento;
+                document.getElementById("modalProximaRepeticao").textContent = novaRepeticao;
                 document.getElementById("modalInformacoesComplementaresRecebida").textContent = receita.infoComp;
 
                 // Exibir o modal de despesas pagas

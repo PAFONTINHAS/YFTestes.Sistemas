@@ -5,6 +5,7 @@ require 'OrganizarDespesa.php';
 $sql = "SELECT * FROM caddesp";
 $result = $conn->query($sql);
 $contagem = 0;
+$dataAtual = date("Y-m-d");
 
 if ($result->num_rows > 0) {
 ?>
@@ -24,9 +25,6 @@ if ($result->num_rows > 0) {
 
 
 </head>
-<header>
-    <h1>ajsfdklasl</h1>
-</header>
 
 <body>
     <table class='tabela-despesas'>
@@ -48,7 +46,6 @@ if ($result->num_rows > 0) {
             $id = $row['id'];
             $contagem ++;
 
-            $dataAtual = date("y-m-d");
 
             $pagoClass = ($row["pago"] == 1) ? "Sim" : "Não";
 
@@ -145,10 +142,17 @@ if ($result->num_rows > 0) {
         $valorAPagarBR = number_format($valorAPagar, 2, ',', '.');
         $valorRealBr = number_format($valorReal, 2, ',', '.');
 
+        if($contagem == 1){
+            $Cadastrados = " Despesa Cadastrada";
+
+        }
+        else{
+            $Cadastrados = " Despesas Cadastradas";
+        }
 
         echo "<h2>Valor de Todas as Despesas: R$ " . $valorRealBr . "</h2>";
         echo "<h2>Valor de Todas as Despesas Pendentes: R$ " . $valorAPagarBR . "</h2>";
-        echo "<h2>Número de Registros: " . $contagem . " Despesas Cadastradas". "</h2>";
+        echo "<h2>Número de Registros: " . $contagem . $Cadastrados . "</h2>";
 
 
 
@@ -171,7 +175,7 @@ if ($result->num_rows > 0) {
         <p>Data de Vencimento: <span id="modalDataVencimentoPaga"></span></p>
         <p>Pago: <span id="modalPagoPaga"></span></p>
         <p>Data de Pagamento: <span id="modalDataPagamentoPaga"></span></p>
-        <p>Nova Parcela liberada dia:<span id="modalNovaParcela"></span></p>
+        <p>Próxima Parcela Liberada Dia:<span id="modalNovaParcela"></span></p>
         <p>Informações Complementares: <span id="modalInformacoesComplementaresPaga"></span></p>
         <button class="botao-excluir" name="excluir" onclick="excluirDespesa()">Excluir</button>
     </div>

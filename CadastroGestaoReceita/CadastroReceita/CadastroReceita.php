@@ -89,7 +89,7 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
     <option> Selecionar</option>
     <option value="Salario">Salário</option>
     <option value="Comissao">Comissão</option>
-    <option value="Saldoini">Saldo Inicial</option>
+    <option value="Saldo Inicial">Saldo Inicial</option>
     <option value="Aluguel">Aluguel</option>
     <option value="Investimento">Inventimentos</option>
     <option value="Alimentacao">Alimentação</option>
@@ -123,12 +123,14 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
 
   <label for="repete">Tipo de Repetição</label>
   <select id="repete" name="repete">
-  <option value='0'>Valor único</option>
+  <option value='1'>Valor único</option>
+  <option value='200'>Receita Contínua</option>
+
   <?php
 
   $recebe = 1;
 
-  for ($i=0; $i < 120; $i++) {
+  for ($i=0; $i < 119; $i++) {
 
     $recebe++;
 

@@ -34,10 +34,20 @@ CREATE TABLE cadrec(
     recebido TINYINT NULL DEFAULT(0),
     repete INT NOT NULL,
     data_recebimento DATE NOT NULL,
-    recrecebido DATE NULL,
     infocomp TEXT NULL
 );
 
+CREATE TABLE cadorc(
+
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(255) NOT NULL,
+    validade DATE NOT NULL,
+    valorOrc DECIMAL(10,2) NOT NULL,
+    valorAtual DECIMAL(10,2) NOT NULL,
+    prioridade varchar(20) NULL,
+    infocomp TEXT NULL
+
+);
 //APERTE EM CONTINUAR
 
 

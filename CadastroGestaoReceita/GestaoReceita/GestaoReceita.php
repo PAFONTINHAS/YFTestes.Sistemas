@@ -5,6 +5,8 @@ require_once 'OrganizarReceita.php';
 
 $sql = "SELECT * FROM cadrec";
 $result = $conn->query($sql);
+$contagem = 0;
+$dataAtual = date("Y-m-d");
 
 if ($result->num_rows > 0) {
 
@@ -43,10 +45,48 @@ if ($result->num_rows > 0) {
     <?php
     while ($row = $result->fetch_assoc()) {
 
+        $id = $row['id'];
+
+
         $recebidoClass = $row["recebido"] ? "Sim" : "Não";
 
+        $contagem ++;
         [$tipoRec, $tipoRecebe, $repete, $valorRecFormatado, $validade] = organizacao($row["tiporec"], $row["tiporecebe"], $row["repete"], $row["valorrec"], $row['validade']);
 
+
+        $validadeEN = date("Y-m-d", strtotime(str_replace('/','-', $validade )));
+
+        $novaRepeticao = date("Y-m-d", strtotime($validadeEN . "-20 days"));
+
+        $repeticaoAcima = date("Y-m-d", strtotime($validadeEN . "+1 days"));
+
+
+      // Converter as datas para objetos DateTime
+        $dataAtualObj = new DateTime($dataAtual);
+        $novaRepeticaoObj = new DateTime($novaRepeticao);
+        $repeticaoAcimaObj = new DateTime($repeticaoAcima);
+
+        if ($dataAtualObj >= $novaRepeticaoObj && $dataAtualObj < $repeticaoAcimaObj) {
+            $recebidoClass = "Não";
+            $sql = "UPDATE cadrec SET recebido = 0 WHERE id = '$id'";
+            $resultQuery = $conn->query($sql);
+
+        }elseif($dataAtualObj != $novaRepeticaoObj && $dataAtual < $repeticaoAcimaObj ){
+            if($row['recebido'] == 1){
+                $recebidoClass = "Sim";
+                $sql2 = "UPDATE cadrec SET recebido = 1 WHERE id = '$id'";
+                $resultQuery2 = $conn->query($sql2);
+            }
+            else{
+                $recebidoClass = "Não";
+                $sql2 = "UPDATE cadrec SET recebido = 0 WHERE id = '$id'";
+                $resultQuery2 = $conn->query($sql2);
+            }
+
+        }
+        else{
+            return;
+        }
 
         echo "<tr id = 'linha' onclick=\"abrirModal(this)\" class=\"$recebidoClass\" data-id=\"" . $row["id"] . "\">
         <td>" . $tipoRec . "</td>
@@ -90,24 +130,18 @@ if ($result->num_rows > 0) {
       $valorAReceberBR = number_format($valorAReceber, 2, ',', '.');
       $valorRealBr = number_format($valorReal, 2, ',', '.');
 
+      if($contagem == 1){
+        $Cadastrados = " Despesa Cadastrada";
 
-      echo "<h2>Valor de Todas as Despesas: R$ " . $valorRealBr . "</h2>";
-      echo "<h2>Valor de Todas as Despesas Pendentes: R$ " . $valorAReceberBR . "</h2>";
+        }
+        else{
+            $Cadastrados = " Despesas Cadastradas";
+        }
 
+      echo "<h2>Valor de Todas as Receitas: R$ " . $valorRealBr . "</h2>";
+      echo "<h2>Valor de Todas as Receitas Pendentes: R$ " . $valorAReceberBR . "</h2>";
+      echo "<h2>Número de Registros: " . $contagem . $Cadastrados . "</h2>";
 
-    // Obtém os dados da query como um array associativo
-    $dados = $result->fetch_assoc();
-    } else {
-        echo "Nenhum registro encontrado.";
-        echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroReceita/CadastroReceita.php\'">Cadastrar nova receita</button>';
-    }
-
-
-
-    $consulta = "SELECT * FROM cadrec";
-    $consultafin = $conn->query($consulta);
-
-    if($consultafin->num_rows > 0){
 ?>
 
 
@@ -124,6 +158,7 @@ if ($result->num_rows > 0) {
         <p>Validade do Recebimento: <span id="modalValidadeRecebida"></span></p>
         <p>Recebido: <span id="modalRecebidoRecebida"></span></p>
         <p>Data de Recebimento: <span id="modalDataRecebimentoRecebida"></span></p>
+        <p>Próxima Repeticao Liberada Dia: <span id="modalProximaRepeticao"></span></p>
         <p>Informações Complementares: <span id="modalInformacoesComplementaresRecebida"></span></p>
         <button class="botao-excluir" name="excluir" onclick="excluirReceita()">Excluir</button>
     </div>
@@ -146,10 +181,11 @@ if ($result->num_rows > 0) {
     </div>
 </div>
 
-<?php }
-else{
-    return;
-    }?>
+<?php } else {
+        echo "Nenhum registro encontrado.";
+        echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroReceita/CadastroReceita.php\'">Cadastrar nova receita</button>';
+    }
+?>
 </body>
 
 

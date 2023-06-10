@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $parcelaAtual = $dados['parcela'];
         $novaParcela = $parcelaAtual - 1;
 
-        // operação de incremento da data de vencimento
+        // operação de adição da data de vencimento
         $query2 = "SELECT vencimento FROM caddesp WHERE id = '$idDespesa'";
         $resultado = $conn -> query($query2);
         $dadoVencimento = $resultado->fetch_assoc();

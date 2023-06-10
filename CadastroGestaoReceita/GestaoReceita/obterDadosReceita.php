@@ -20,21 +20,24 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
         $dadosReceita = $result->fetch_assoc();
 
+        [$tipoReceita, $recebimento, $repete, $valorRecFormatado, $validadeBR] = organizacao($dadosReceita['tiporec'], $dadosReceita['tiporecebe'], $dadosReceita['repete'], $dadosReceita['valorrec'] , $dadosReceita['validade']);
+
         $dataRecebimentoEN = $dadosReceita['data_recebimento'];
+        $infoComp = $dadosReceita['infocomp'];
 
         $dataRecebimentoBR = date("d/m/Y", strtotime(str_replace('-', '/', $dataRecebimentoEN)));
+        $validade = $dadosReceita['validade'];
 
 
+        $novaRepeticao = date("Y-m-d", strtotime($validade . "-20 days"));
+        $repeticaoReal = date("d/m/Y", strtotime($novaRepeticao . "today"));
 
-        [$tipoReceita, $recebimento, $repete, $valorRecFormatado, $vencimentoBR] = organizacao($dadosReceita['tiporec'], $dadosReceita['tiporecebe'], $dadosReceita['repete'], $dadosReceita['valorrec'] , $dadosReceita['validade']);
-
-        $infoComp = $dadosReceita['infocomp'];
 
         $dadosReceita['tipoReceita'] = $tipoReceita;
         $dadosReceita['tipoRecebimento'] = $recebimento;
         $dadosReceita['repete'] = $repete;
         $dadosReceita['valorRec'] = $valorRecFormatado;
-        $dadosReceita['validade'] = $vencimentoBR;
+        $dadosReceita['validade'] = $validadeBR;
         $dadosReceita['infoComp'] = $infoComp;
 
 
@@ -47,10 +50,28 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
 
         // Agora você pode retornar os dados da receita como uma resposta JSON
-        $response = array(
-            'receita' => $dadosReceita,
-            'dataRecebimento' => $dataRecebimentoBR // Inclua aqui a data de pagamento da receita, se disponível
-        );
+        // $response = array(
+        //     'receita' => $dadosReceita,
+        //     'dataRecebimento' => $dataRecebimentoBR,
+        //     'novaRepeticao' => $repeticaoReal
+        // );
+
+        if($repete != " Receita Finalizada"){
+            $response = array(
+           'receita' => $dadosReceita,
+           'dataRecebimento' => $dataRecebimentoBR,
+           'novaRepeticao' => $repeticaoReal
+       );
+       }else{
+           $dadosReceita['dataVencimento'] = $repete;
+           $repetcaoReal = $repete;
+           $dadosReceita['infoComp'] = $repete;
+           $response = array(
+               'receita' => $dadosReceita,
+               'dataRecebimento' => $dataRecebimentoBR,
+               'novaRepeticao' => $repeticaoReal
+           );
+       }
 
         header('Content-Type: application/json');
         echo json_encode($response);

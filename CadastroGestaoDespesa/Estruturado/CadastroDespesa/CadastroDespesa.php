@@ -13,60 +13,9 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
 
-    <style>
-  /* Estilos para o formulário */
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  /* Estilos para os rótulos */
-  label {
-    font-weight: bold;
-  }
-
-  /* Estilos para as caixas de seleção */
-  select {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-
-  /* Estilos para os campos de entrada de texto */
-  input[type="text"],
-  input[type="number"],
-  input[type="date"] {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-
-  /* Estilos para o botão de enviar */
-  input[type="submit"] {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  /* Estilos para o botão de enviar quando o mouse estiver sobre ele */
-  input[type="submit"]:hover {
-    background-color: #45a049;
-  }
-  #infoComplementares {
-    width: 100%;
-    height: 100px;
-    border-radius:10px;
-
-  }
-</style>
 
 </head>
 <body>

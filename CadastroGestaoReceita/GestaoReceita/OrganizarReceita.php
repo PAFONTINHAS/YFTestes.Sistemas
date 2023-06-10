@@ -5,11 +5,14 @@ function organizacao($receita, $recebimento, $repete, $valorRec, $vencimento){
 
 // Alterações da Repetição
 if($repete == 0){
-    $repete = "Receita Finalizada";
-    $recebimento = "Receita Finalizada";
+    $repete = " Receita Finalizada";
+    $recebimento = " Receita Finalizada";
 }
 elseif($repete == 1 ){
     $repete = "valor único";
+}
+elseif ($repete == 200){
+    $repete = "Receita Contínua";
 }
 else{
     $repete .= " vezes";
@@ -41,9 +44,7 @@ if ($recebimento == "CartaoCred"){
 elseif($recebimento == "CartaoDeb"){
     $recebimento = "Cartão de Débito";
 }
-elseif($recebimento == "SaldoIni"){
-    $recebimento = "Saldo Inicial";
-}
+
 
 $valorRecFormatado = number_format($valorRec, 2, ',', '.');
 

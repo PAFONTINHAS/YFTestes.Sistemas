@@ -18,13 +18,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Operação de subtração da repetição
         $query = "SELECT repete FROM cadrec WHERE id = '$idReceita'";
         $result = $conn->query($query);
-        $dados = $result->fetch_assoc();
-        $RepeticaoAtual = $dados['repete'];
-        $novaRepeticao = $RepeticaoAtual - 1;
+        $dadoRepete = $result->fetch_assoc();
+        $RepeticaoAtual = $dadoRepete['repete'];
+        $novaRepeticao;
+
+        if($RepeticaoAtual == 200){
+            $novaRepeticao = $RepeticaoAtual;
+        }
+        else{
+
+            $novaRepeticao = $RepeticaoAtual - 1;
+        }
+
+        // operação de adição da data de validade
+        $query2 = "SELECT validade FROM cadrec WHERE id = '$idReceita'";
+        $resultado = $conn -> query($query2);
+        $dadoValidade = $resultado->fetch_assoc();
+        $validadeAtual = $dadoValidade['validade'];
+        $validadeAdd = date("Y-m-d", strtotime($validadeAtual . "+1 month"));
 
 
         // Atualize a receita no banco de dados com a data de recebimento fornecida
-        $sql = "UPDATE cadrec SET data_recebimento = '$dataRecEN', repete = '$novaRepeticao', recebido = 1 WHERE id = '$idReceita'";
+        $sql = "UPDATE cadrec SET data_recebimento = '$dataRecEN', repete = '$novaRepeticao', validade = '$validadeAdd', recebido = 1 WHERE id = '$idReceita'";
 
         if ($conn->query($sql) === TRUE) {
             echo "receita recebida com sucesso.";
