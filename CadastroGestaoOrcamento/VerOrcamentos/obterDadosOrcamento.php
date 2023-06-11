@@ -23,10 +23,16 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         $prioridade = $dadosOrcamento['prioridade'];
         $infoComp = $dadosOrcamento['infoComp'];
 
+        $valorAtualBR = number_format($valorAtual, 2, ',', '.');
+        $valorOrcBR = number_format($valorOrc, 2, ',', '.');
+
+        $validadeBR = date("d/m/Y", strtotime(str_replace('-', '/', $validade)));
+
+
         $dadosOrcamento['titulo'] = $titulo;
-        $dadosOrcamento['validade'] = $validade;
-        $dadosOrcamento['valorOrc'] = $valorOrc;
-        $dadosOrcamento['valorAtual'] = $valorAtual;
+        $dadosOrcamento['validade'] = $validadeBR;
+        $dadosOrcamento['valorOrc'] = $valorOrcBR;
+        $dadosOrcamento['valorAtual'] = $valorAtualBR;
         $dadosOrcamento['prioridade'] = $prioridade;
         $dadosOrcamento['infoComp'] = $infoComp;
 

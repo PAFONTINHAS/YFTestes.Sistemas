@@ -89,7 +89,6 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
     <option> Selecionar</option>
     <option value="Salario">Salário</option>
     <option value="Comissao">Comissão</option>
-    <option value="Saldo Inicial">Saldo Inicial</option>
     <option value="Aluguel">Aluguel</option>
     <option value="Investimento">Inventimentos</option>
     <option value="Alimentacao">Alimentação</option>

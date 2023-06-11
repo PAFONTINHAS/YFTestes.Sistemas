@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $result = $conn->query($query);
         $dadoRepete = $result->fetch_assoc();
         $RepeticaoAtual = $dadoRepete['repete'];
-        $novaRepeticao;
+        $novaRepeticao = 0;
 
 
         // operação de adição da data de validade
@@ -28,19 +28,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $resultado = $conn -> query($query2);
         $dadoValidade = $resultado->fetch_assoc();
         $validadeAtual = $dadoValidade['validade'];
-        $validadeAdd;
+        $validadeAdd = 0;
 
         if($RepeticaoAtual == 200){
             $novaRepeticao = $RepeticaoAtual;
-            $validadeAdd = $validadeAtual;
+            $validadeAdd = date("Y-m-d", strtotime($validadeAtual . "+1 month"));
         }
         elseif($RepeticaoAtual == 0){
             $novaRepeticao = $RepeticaoAtual;
-            $validadeAdd = date("Y-m-d", strtotime($validadeAtual . "+1 month"));
+            $validadeAdd = $validadeAtual;
         }
         else{
 
             $novaRepeticao = $RepeticaoAtual - 1;
+            $validadeAdd = date("Y-m-d", strtotime($validadeAtual . "+1 month"));
+
         }
 
         // Atualize a receita no banco de dados com a data de recebimento fornecida

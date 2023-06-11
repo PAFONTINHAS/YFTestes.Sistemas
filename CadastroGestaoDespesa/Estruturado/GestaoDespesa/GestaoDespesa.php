@@ -24,9 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
-    </head>
-    cxzv
-    <body>
+    </head>    <body>
     <table class='tabela-despesas'>
         <tr>
             <th>Nome da Despesa</th>
@@ -46,7 +44,7 @@
             $id = $row['id'];
             $contagem ++;
 
-            $parcelaTeste = $row['parcela'];
+            $parcelaFinalizada= $row['parcela'];
 
             $pagoClass = ($row["pago"] == 1) ? "Sim" : "Não";
 
@@ -59,39 +57,25 @@
 
             $novaParcela = date("Y-m-d", strtotime($vencimentoEN . "-20 days"));
 
-            $parcelaAcima = date("Y-m-d", strtotime($vencimentoEN . "+1 days"));
 
 
-            // Converter as datas para objetos DateTime
-            $dataAtualObj = new DateTime($dataAtual);
-            $novaParcelaObj = new DateTime($novaParcela);
-            $parcelaAcimaObj = new DateTime($parcelaAcima);
 
             // Verificar se a data atual está dentro do intervalo
-            if ($dataAtualObj >= $novaParcelaObj && $dataAtualObj < $parcelaAcimaObj ) {
-                if($parcelaTeste != 0 ){
-                    $pagoClass = "Não";
+            if ($dataAtual == $novaParcela && $dataAtual <= $vencimento){
+
+                if($parcelaFinalizada == 0){
+
+                    $sql = "UPDATE caddesp SET pago = 1 WHERE id = '$id'";
+                    $pagoClass = "Sim";
+                    $resultQuery = $conn->query($sql);
+
+                }
+                else{
+
                     $sql = "UPDATE caddesp SET pago = 0 WHERE id = '$id'";
+                    $pagoClass = "Não";
                     $resultQuery = $conn->query($sql);
                 }
-                else{
-                    return;
-                }
-            }elseif($dataAtualObj != $novaParcelaObj && $dataAtual < $parcelaAcimaObj ){
-                if($row['pago'] == 1){
-                    $pagoClass = "Sim";
-                    $sql2 = "UPDATE caddesp SET pago = 1 WHERE id = '$id'";
-                    $resultQuery2 = $conn->query($sql2);
-                }
-                else{
-                    $pagoClass = "Não";
-                    $sql2 = "UPDATE caddesp SET pago = 0 WHERE id = '$id'";
-                    $resultQuery2 = $conn->query($sql2);
-                }
-
-            }
-            else{
-                return;
             }
 
             echo "<tr id='linha' onclick=\"abrirModal(this)\" class=\"$pagoClass\" data-id=\"" . $row['id']. "\">

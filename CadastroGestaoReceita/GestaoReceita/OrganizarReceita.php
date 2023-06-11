@@ -6,7 +6,7 @@ function organizacao($receita, $recebimento, $repete, $valorRec, $vencimento){
 // Alterações da Repetição
 if($repete == 0){
     $repete = " Receita Finalizada";
-    $recebimento = " Receita Finalizada";
+    // $recebimento = " Receita Finalizada";
 }
 elseif($repete == 1 ){
     $repete = "valor único";

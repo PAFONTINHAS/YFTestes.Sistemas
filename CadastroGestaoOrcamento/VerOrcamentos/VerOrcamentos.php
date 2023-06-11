@@ -24,15 +24,14 @@ if ($result->num_rows > 0) {
 
 
 </head>
-
 <body>
     <table class='tabela-Orcamentos'>
         <tr>
             <th>Título do Orçamento</th>
             <th>Validade</th>
             <th>Valor Total do Orçamento</th>
-            <th>Valor Guardado Para o Orçamento</th>
-            <th>Prioridade do Orçamento</th>
+            <th>Valor Investido</th>
+            <th>Prioridade </th>
             <th>Informações Complementares</th>
         </tr>
         <?php
@@ -42,7 +41,7 @@ if ($result->num_rows > 0) {
                 <td>" . $row['titulo'] . "</td>
                 <td>" . $row['validade'] . "</td>
                 <td> R$ " .$row['valorOrc']. "</td>
-                <td>" . $row['valorAtual'] . "</td>
+                <td> R$ " . $row['valorAtual'] . "</td>
                 <td>" . $row['prioridade']. "</td>
                 <td>" . $row['infoComp'] . "</td>
             </tr>";
@@ -68,12 +67,18 @@ if ($result->num_rows > 0) {
         <span class="fechar" onclick="fecharModal()">&times;</span>
         <h2 id="modalTitulo"></h2>
         <p>Validade: <span id="modalValidade"></span></p>
-        <p>Valor do Orçamento: <span id="modalValorOrc"></span></p>
-        <p>Valor Já Guardado para o Orçamento: <span id="modalValorAtual"></span></p>
+        <p>Valor do Orçamento: R$ <span id="modalValorOrc"></span></p>
+        <p>Valor Investido: R$ <span id="modalValorAtual"></span></p>
         <p>Prioridade: <span id="modalPrioridade"></span></p>
+        <p>Insira o valor para sacar ou depositar :<input type="text" class = "decimal-input" onInput = "mascaraMoeda(event)" name = "modalValorInserir" id = "modalValorInserir" required>
+</p>
+
         <p>Informações Complementares: <span id="modalInfoComp"></span></p>
 
         <button class="botao-excluir" name="excluir" onclick="excluirOrcamento()">Excluir</button>
+        <button class="botao-sacar" name="sacar" onclick="sacarValor()">Sacar</button>
+        <button class="botao-depositar" name="depositar" onclick="depositarValor()">Depositar</button>
+
     </div>
 </div>
 

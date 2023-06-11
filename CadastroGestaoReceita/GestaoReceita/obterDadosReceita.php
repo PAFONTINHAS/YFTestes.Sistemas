@@ -63,13 +63,13 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
            'novaRepeticao' => $repeticaoReal
        );
        }else{
-           $dadosReceita['dataVencimento'] = $repete;
+           $dadosReceita['validade'] = $repete;
            $repetcaoReal = $repete;
            $dadosReceita['infoComp'] = $repete;
            $response = array(
                'receita' => $dadosReceita,
                'dataRecebimento' => $dataRecebimentoBR,
-               'novaRepeticao' => $repeticaoReal
+               'novaRepeticao' => $repete
            );
        }
 

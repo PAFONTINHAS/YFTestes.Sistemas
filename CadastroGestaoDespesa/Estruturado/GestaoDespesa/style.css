@@ -34,7 +34,8 @@ table {
 
   .botao-pagar,
   .botao-excluir,
-  .botao-cadastro {
+  .botao-cadastro,
+  .botao-aumentar {
     padding: 6px 12px;
     border: none;
     cursor: pointer;
@@ -43,7 +44,8 @@ table {
     font-size: 14px;
   }
 
-  .botao-pagar {
+  .botao-pagar,
+  .botao-aumentar {
     background-color: #7FFF7F; /* Verde */
     color: white;
   }

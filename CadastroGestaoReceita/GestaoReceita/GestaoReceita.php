@@ -26,7 +26,6 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
-
 <body>
 
 <table class='tabela-receitas'>
@@ -41,13 +40,12 @@ if ($result->num_rows > 0) {
 
 
     </tr>
-
     <?php
     while ($row = $result->fetch_assoc()) {
 
         $id = $row['id'];
 
-        $repeteTeste = $row["repete"];
+        $repeteFinalizada = $row["repete"];
         $recebidoClass = $row["recebido"] ? "Sim" : "Não";
 
         $contagem ++;
@@ -58,39 +56,26 @@ if ($result->num_rows > 0) {
 
         $novaRepeticao = date("Y-m-d", strtotime($validadeEN . "-20 days"));
 
-        $repeticaoAcima = date("Y-m-d", strtotime($validadeEN . "+1 days"));
 
 
-      // Converter as datas para objetos DateTime
-        $dataAtualObj = new DateTime($dataAtual);
-        $novaRepeticaoObj = new DateTime($novaRepeticao);
-        $repeticaoAcimaObj = new DateTime($repeticaoAcima);
+           // Verificar se a data atual está dentro do intervalo
+           if ($dataAtual == $novaRepeticao && $dataAtual < $validade){
 
-        if ($dataAtualObj >= $novaRepeticaoObj && $dataAtualObj < $repeticaoAcimaObj) {
-            if($repeteTeste != 0){
-                $recebidoClass = "Não";
+            if($repeteFinalizada == 0){
+
+                $sql = "UPDATE cadrec SET recebido = 1 WHERE id = '$id'";
+                $recebidoClass = "Sim";
+                $resultQuery = $conn->query($sql);
+
+            }
+            else{
+
                 $sql = "UPDATE cadrec SET recebido = 0 WHERE id = '$id'";
+                $recebidoClass = "Não";
                 $resultQuery = $conn->query($sql);
             }
-            else{
-                return;
-            }
-        }elseif($dataAtualObj != $novaRepeticaoObj && $dataAtual < $repeticaoAcimaObj ){
-            if($row['recebido'] == 1){
-                $recebidoClass = "Sim";
-                $sql2 = "UPDATE cadrec SET recebido = 1 WHERE id = '$id'";
-                $resultQuery2 = $conn->query($sql2);
-            }
-            else{
-                $recebidoClass = "Não";
-                $sql2 = "UPDATE cadrec SET recebido = 0 WHERE id = '$id'";
-                $resultQuery2 = $conn->query($sql2);
-            }
+        }
 
-        }
-        else{
-            return;
-        }
 
         echo "<tr id = 'linha' onclick=\"abrirModal(this)\" class=\"$recebidoClass\" data-id=\"" . $row["id"] . "\">
         <td>" . $tipoRec . "</td>
