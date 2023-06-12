@@ -1,5 +1,15 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
+$id = $_SESSION['id'];
+
+
 require_once '../../conexao/banco.php';
+
 
 // Verificar se foi fornecido um ID válido na query string
 if (isset($_GET['id']) && !empty($_GET['id'])) {

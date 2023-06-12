@@ -1,4 +1,14 @@
 <?php
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
+
+
+require_once '../../../conexao/banco.php';
+
+$id = $_SESSION['id'];
 
 $doisAnosAtras = date('Y-m-d', strtotime('-2 years'));
 $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));

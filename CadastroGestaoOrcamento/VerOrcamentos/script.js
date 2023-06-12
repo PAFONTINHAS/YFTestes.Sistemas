@@ -1,4 +1,4 @@
-
+// FUNÇÃO PARA ABRIR O MODAL
 function abrirModal(row) {
     var id = row.getAttribute("data-id");
     var modalVerOrcamento = document.getElementById("modalVerOrcamento");
@@ -58,33 +58,31 @@ function sacarValor(){
     }
     else if (confirm("Deseja sacar " + inserirValor + " do valor investido?")) {
 
-        // Verificar se a data de pagamento foi informada
-        if ( inserirValor === "") {
-            alert("Por favor, insira um valor válido.");
-            return; // Encerrar a função sem prosseguir com o sacamento
-        }else{
-            // Executar a lógica de pagamento da despesa
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'sacarValor.php', true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    // A requisição foi concluída com sucesso
-                    alert(xhr.responseText);
-                    // Atualize a tabela ou faça outras ações necessárias
-                }
-            };
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'sacarValor.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // A requisição foi concluída com sucesso
+                alert(xhr.responseText);
+                // Atualize a tabela ou faça outras ações necessárias
+            }
+        };
 
+        if(confirm("Deseja adicionar o valor sacado ao Saldo Atual?")){
+            var operacao = "somar";
+
+            // Enviar os dados para atualizarSaldo.php
+            var params = 'id='+ idOrcamento + '&inserirValor=' + inserirValor + '&operacao=' + operacao; // O valor que você deseja adicionar ao saldo
+            xhr.send(params);
+        }
+        else{
+
+            var operacao = null;
             // Enviar os dados para pagarDespesa.php
-            var params = 'id=' + idOrcamento + '&inserirValor=' + inserirValor;
+            var params = 'id=' + idOrcamento + '&inserirValor=' + inserirValor +"&operacao=" + operacao;
             xhr.send(params);
 
-
-        }
-        if(confirm("Deseja somar o valor sacado ao Saldo Atual?")){
-            alert("Valor somado ao saldo atual");
-        }else{
-            alert("Valor não somado ao saldo atual");
         }
 
         fecharModal();
@@ -129,13 +127,24 @@ function depositarValor(){
                 }
             };
 
-            // Enviar os dados para pagarDespesa.php
-            var params = 'id=' + idOrcamento + '&inserirValor=' + inserirValor;
-            xhr.send(params);
+            if(confirm("Deseja subtrair o valor depositado do Saldo Atual?")){
+                var operacao = "subtrair";
 
+                // Enviar os dados para atualizarSaldo.php
+                var params = 'id=' + idOrcamento + '&inserirValor=' + inserirValor + "&operacao=" + operacao;
+                xhr.send(params);
+            }
+            else{
+
+                var operacao = null;
+
+                // Enviar os dados para pagarDespesa.php
+                var params = 'id=' + idOrcamento + '&inserirValor=' + inserirValor + "&operacao=" + operacao;
+                xhr.send(params);
+
+            }
 
             fecharModal();
-
         }
         else{
             alert("Operação cancelada");
@@ -144,6 +153,7 @@ function depositarValor(){
     }
 
 
+    // FUNÇÃO PARA EXCLUIR O ORÇAMENTO
     function excluirOrcamento() {
         if (confirm("Tem certeza que deseja excluir esse orçamento?")) {
 

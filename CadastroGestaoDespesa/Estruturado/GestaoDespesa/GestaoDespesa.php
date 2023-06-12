@@ -1,4 +1,10 @@
     <?php
+    // session_start();
+    // if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    //     header('Location: index.php');
+    //     exit;
+    // }
+
     require_once '../../../conexao/banco.php';
     require 'OrganizarDespesa.php';
 
@@ -6,7 +12,9 @@
     $result = $conn->query($sql);
     $contagem = 0;
     $dataAtual = date("Y-m-d");
+    $id = $_SESSION['id'];
 
+    echo $id;
     if ($result->num_rows > 0) {
     ?>
 
@@ -117,6 +125,13 @@
         $finalizados = $resultado2->fetch_assoc();
         $valorDespesasFinalizadas = $finalizados['soma_despesas_final'];
 
+        // Pegando o saldo do usuário
+
+        $query3 = "SELECT saldo FROM usuario WHERE id = '$id'";
+        $resultado3 = $conn->query($query3);
+        $consulta = $resultado3->fetch_assoc();
+        $saldoBanco = $consulta['saldo'];
+
         // Cálculo do valor a pagar
         $valorReal = $valorTotal - $valorDespesasFinalizadas;
         $valorAPagar = $valorTotal - $valorDespesasPagas;
@@ -124,6 +139,7 @@
         //Conversão dos valores para o sistema monetário brasileiro
         $valorAPagarBR = number_format($valorAPagar, 2, ',', '.');
         $valorRealBr = number_format($valorReal, 2, ',', '.');
+        $saldo = number_format($saldoBanco, 2, ',', '.');
 
         if($contagem == 1){
             $Cadastrados = " Despesa Cadastrada";
@@ -136,7 +152,7 @@
         echo "<h2>Valor de Todas as Despesas: R$ " . $valorRealBr . "</h2>";
         echo "<h2>Valor de Todas as Despesas Pendentes: R$ " . $valorAPagarBR . "</h2>";
         echo "<h2>Número de Registros: " . $contagem . $Cadastrados . "</h2>";
-
+        echo "<h2>Saldo da sua conta: R$ " . $saldo . "</h2>";
 
 
 

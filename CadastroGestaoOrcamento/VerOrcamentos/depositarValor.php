@@ -1,13 +1,23 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
+$id = $_SESSION['id'];
+
 require_once '../../conexao/banco.php';
 
 // Verificar se a requisição é do tipo POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Verificar se os parâmetros foram recebidos corretamente
-    if (isset($_POST["id"]) && isset($_POST["inserirValor"])) {
+    if (isset($_POST["id"]) && isset($_POST["inserirValor"]) && isset($_POST["operacao"])) {
+
         // Obter os valores dos parâmetros
         $idOrcamento = $_POST["id"];
         $inserirValorBR = $_POST["inserirValor"];
+        $operacao = $_POST['operacao'];
 
          // Convertendo o Valor Atual para o sistema monetário americano
         $inserirValorEN = preg_replace('/[^\d,]/', '', $inserirValorBR);
@@ -23,8 +33,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $valorAtual = $dadoValor['valorAtual'];
         $orcamento = $dadoValor['valorOrc'];
 
+
+        //buscando o saldo do banco de dados
+        $query  = "SELECT saldo FROM usuario WHERE id = $id";
+        $resultado = $conn->query($query);
+        $consulta = $resultado->fetch_assoc();
+        $saldoBanco = $consulta['saldo'];
+
+
+
         // Subtraindo o valor o orçamento com o valor já depositado
         $subtracao = $orcamento - $valorAtual;
+
+
+        if($operacao == "subtrair"){
+
+            $novoSaldo = $saldoBanco + $valorDepositado;
+
+        }
+        else{
+            $novoSaldo = $saldoBanco;
+        }
+        //TERMINAR A VALIDAÇÃO DE SALVAR OU NÃO O SALDO. CRIAR MAIS UM $SQL PARA ISSO
+
 
         // Verificando se o valor sacado é menor que o valor já depositado
         if($valorDepositado <= $subtracao){
@@ -32,22 +63,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $deposito = $valorAtual + $valorDepositado;
 
             $sql = "UPDATE cadorc SET valorAtual = '$deposito' WHERE  id = '$idOrcamento'";
+            $sql2 = "UPDATE usuario SET saldo = '$novoSaldo' WHERE id = 1";
 
-            $resultado = $conn -> query($sql);
+            if($conn -> query($sql) && $conn -> query($sql2) && $operacao != "subtrair"){
 
-            if($resultado == TRUE){
+                echo"Valor depositado com êxito";
 
-            echo "Valor depositado com êxito";
-
+            }
+            elseif($conn -> query($sql) && $conn -> query($sql2) && $operacao == "subtrair"){
+                echo "Valor depositado com sucesso e removido do saldo";
             }
             else{
                 die('Erro ao Sacar o valor'. $conn->error);
             }
-        }else{
+        }
 
-            $subtracaoConvertida = number_format($subtracao, 2, ',', '.');
 
-            echo("Erro: Deposite um valor menor ou igual a R$ " . $subtracaoConvertida);
+        else{
+
+            if ($valorAtual == $orcamento){
+
+                echo("Você já atingiu o limite do seu orçamento");
+            }
+            else{
+                $subtracaoConvertida = number_format($subtracao, 2, ',', '.');
+
+                echo("Erro: Deposite um valor menor ou igual a R$ " . $subtracaoConvertida);
+            }
         }
 
 

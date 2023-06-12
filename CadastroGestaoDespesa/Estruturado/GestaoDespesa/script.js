@@ -18,7 +18,7 @@ function abrirModal(row) {
             var novaParcela = response.novaParcela;
 
             if (despesa.pago === "Sim") {
-                
+
                 // Preencher os dados no modal de despesas pagas
                 document.getElementById("modalTituloPaga").textContent = despesa.nomeDespesa;
                 document.getElementById("modalCategoriaPaga").textContent = despesa.categoria;

@@ -1,6 +1,16 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
+
 require_once '../../../conexao/banco.php';
 require 'OrganizarDespesa.php';
+
+$id = $_SESSION['id'];
+
 // Verificar se foi fornecido um ID válido na query string
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $idDespesa = $_GET['id'];

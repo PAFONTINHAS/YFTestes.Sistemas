@@ -1,5 +1,12 @@
 <?php
 
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
+$id = $_SESSION['id'];
+
 require_once '../../../conexao/banco.php';
 
 // Verificar se a requisição é do tipo POST
@@ -13,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         //Conversão da data de pagamento para os sistema americano
         $dataReal = date("Y-m-d", strtotime(str_replace('/', '-', $dataPagamento)));
 
-        // Operação de subtração da parcela
+        // Pegando o dado da parcela do banco de dados
         $query = "SELECT parcela FROM caddesp WHERE id = '$idDespesa'";
         $result = $conn->query($query);
         $dados = $result->fetch_assoc();
@@ -21,13 +28,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $novaParcela = 0;
 
 
-
-        // operação de adição da data de vencimento
+        // Pegando o dado do vencimento do banco de dados
         $query2 = "SELECT vencimento FROM caddesp WHERE id = '$idDespesa'";
         $resultado = $conn -> query($query2);
         $dadoVencimento = $resultado->fetch_assoc();
         $vencimentoAtual = $dadoVencimento['vencimento'];
         $vencimentoAdd;
+
+        // Pegando o dado do valor do banco de dados
+        $query3 = "SELECT valor FROM caddesp WHERE id = '$idDespesa'";
+        $resultado3 = $conn->query($query3);
+        $consulta = $resultado3->fetch_assoc();
+        $valorBanco = $consulta['valor'];
+
+        // Pegando o dado do saldo do banco de dados
+        $query3 = "SELECT saldo FROM usuario WHERE id = $id";
+        $resultado4 = $conn->query($query4);
+        $consulta2 = $resultado4->fetch_assoc();
+        $saldoBanco = $consulta2['saldo'];
+
+
+        // calculando o valor atual do saldo
+        $saldoAtual = $saldoBanco - $valorBanco;
+
 
         if($parcelaAtual == 0){
             $novaParcela = $parcelaAtual;
@@ -42,8 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Atualize a despesa no banco de dados com a data de pagamento fornecida
         $sql = "UPDATE caddesp SET data_pagamento = '$dataReal', pago = 1, parcela = '$novaParcela', vencimento = '$vencimentoAdd' WHERE id = '$idDespesa'";
+        $sql2 = "UPDATE usuario SET saldo = '$saldoAtual' WHERE id = 1";
 
-        if ($conn->query($sql) === TRUE) {
+        if ($conn->query($sql) === TRUE && $conn->query($sql2) == TRUE) {
             echo "Despesa paga com sucesso.";
         } else {
             echo "Erro ao pagar a despesa: " . $conn->error;

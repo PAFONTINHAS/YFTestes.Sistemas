@@ -1,7 +1,15 @@
 <?php
 
+
 require_once '../../conexao/banco.php';
 require_once 'OrganizarReceita.php';
+// session_start();
+// if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+//     header('Location: index.php');
+//     exit;
+// }
+$id = $_SESSION['id'];
+
 
 $sql = "SELECT * FROM cadrec";
 $result = $conn->query($sql);
@@ -93,43 +101,51 @@ if ($result->num_rows > 0) {
     echo"<hr>";
 
 
-      // Cálculo para todas as receitas cadastradas no banco de dados
-      $sql = "SELECT SUM(valorrec) AS soma_valores, COUNT(*) AS valor_total FROM cadrec";
-      $result = $conn->query($sql);
-      $dados = $result->fetch_assoc();
-      $valorTotal = $dados['soma_valores'];
+    // Cálculo para todas as receitas cadastradas no banco de dados
+    $sql = "SELECT SUM(valorrec) AS soma_valores, COUNT(*) AS valor_total FROM cadrec";
+    $result = $conn->query($sql);
+    $dados = $result->fetch_assoc();
+    $valorTotal = $dados['soma_valores'];
 
-      // Cálculo para todas as despesas que já foram pagas
-      $query = "SELECT SUM(valorrec) AS soma_receitas_recebidas FROM cadrec WHERE recebido = 1";
-      $resultado = $conn->query($query);
-      $recebidos = $resultado->fetch_assoc();
-      $valorDespesasPagas = $recebidos['soma_receitas_recebidas'];
+    // Cálculo para todas as receitass que já foram pagas
+    $query = "SELECT SUM(valorrec) AS soma_receitas_recebidas FROM cadrec WHERE recebido = 1";
+    $resultado = $conn->query($query);
+    $recebidos = $resultado->fetch_assoc();
+    $valorReceitasPagas = $recebidos['soma_receitas_recebidas'];
 
-      //Cálculo para todas as despesas finalizadas
-      $query2 = "SELECT SUM(valorrec) AS soma_receitas_final FROM cadrec WHERE repete = 0";
-      $resultado2 = $conn->query($query2);
-      $finalizados = $resultado2->fetch_assoc();
-      $valorDespesasFinalizadas = $finalizados['soma_receitas_final'];
+    //Cálculo para todas as receitas finalizadas
+    $query2 = "SELECT SUM(valorrec) AS soma_receitas_final FROM cadrec WHERE repete = 0";
+    $resultado2 = $conn->query($query2);
+    $finalizados = $resultado2->fetch_assoc();
+    $valorReceitasFinalizadas = $finalizados['soma_receitas_final'];
 
-      // Cálculo do valor a pagar
-      $valorReal = $valorTotal - $valorDespesasFinalizadas;
-      $valorAReceber = $valorTotal - $valorDespesasPagas;
+    // Pegando o dado do saldo do banco de dados
+    $query4 = "SELECT saldo FROM usuario WHERE id = $id";
+    $resultado3 = $conn->query($query4);
+    $consulta2 = $resultado3->fetch_assoc();
+    $saldoBanco = $consulta2['saldo'];
 
-      //Conversão dos valores para o sistema monetário brasileiro
-      $valorAReceberBR = number_format($valorAReceber, 2, ',', '.');
-      $valorRealBr = number_format($valorReal, 2, ',', '.');
+    // Cálculo do valor a pagar
+    $valorReal = $valorTotal - $valorReceitasFinalizadas;
+    $valorAReceber = $valorTotal - $valorReceitasPagas;
 
-      if($contagem == 1){
-        $Cadastrados = " Despesa Cadastrada";
+    //Conversão dos valores para o sistema monetário brasileiro
+    $valorAReceberBR = number_format($valorAReceber, 2, ',', '.');
+    $valorRealBr = number_format($valorReal, 2, ',', '.');
+    $saldo = number_format($saldoBanco, 2, ',', '.');
 
-        }
-        else{
-            $Cadastrados = " Despesas Cadastradas";
-        }
+    if($contagem == 1){
+    $Cadastrados = " Receita Cadastrada";
 
-      echo "<h2>Valor de Todas as Receitas: R$ " . $valorRealBr . "</h2>";
-      echo "<h2>Valor de Todas as Receitas Pendentes: R$ " . $valorAReceberBR . "</h2>";
-      echo "<h2>Número de Registros: " . $contagem . $Cadastrados . "</h2>";
+    }
+    else{
+        $Cadastrados = " Receitas Cadastradas";
+    }
+
+    echo "<h2>Valor de Todas as Receitas: R$ " . $valorRealBr . "</h2>";
+    echo "<h2>Valor de Todas as Receitas Pendentes: R$ " . $valorAReceberBR . "</h2>";
+    echo "<h2>Número de Registros: " . $contagem . $Cadastrados . "</h2>";
+    echo "<h2>Saldo da sua conta: " . $saldo . "</h2>";
 
 ?>
 

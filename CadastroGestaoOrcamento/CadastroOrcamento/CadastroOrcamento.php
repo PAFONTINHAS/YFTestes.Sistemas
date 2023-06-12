@@ -2,10 +2,17 @@
 // Criação de orçamentos: O usuário terá a capacidade de criar orçamentos. Será pedido para o usuário preencher o nome do orçamento, a categoria que ele deseja fazer o orçamento, o valor atual e a meta financeira como um valor limite para executar o orçamento que deseja. POSSÍVEL INCREMENTO: O USUÁRIO PODERÁ DEFINIR O VALOR DE DUAS FORMAS, UMA FORMA É DEFINIR O VALOR MANUALMENTE DE ACORDO COM O QUE ELE TEM DISPONÍVEL. OUTRA FORMA É PEGAR O VALOR ATUAL DAS RECEITAS JÁ RECEBIDAS SUBTRAÍDAS COM AS DESPESAS PAGAS. PODERÁ SER ADICIONADA A OPÇÃO DE CATEGORIAS PERSONALIZADAS PARA QUE O USUÁRIO POSSA DEFINIR CATEGORIAS QUE NÃO ESTÃO PADRONIZADAS NO SISTEMA.
 
 // Ver Orçamentos: Poderá ser executado da mesma forma que a gestão de despesas e receitas, uma forma de tabela de acordo com os atributos cadastrados na página de criação de orçamentos, e acessado com as informações através de uma modal box. POSSÍVEL INCREMENTO: FAZER COM QUE O USUÁRIO POSSA ALTERAR O VALOR DA FORMA QUE PUDER, PODENDO (SE QUISER) REGISTRAR A DATA DA ADIÇÃO OU SUBTRAÇÃO. NA TELA DE INFORMAÇÃO DE ORÇAMENTO, PODEMOS ADICIONAR UMA ABA DE PROGRESSO PARA QUE O USUÁRIO ACOMPANHE O PROGRESSO EM FORMA DE PORCENTAGEM, QUE VAI VARIANDO DE ACORDO COM A ADIÇÃO OU REMOÇÃO DE DINHEIRO. SE O USUÁRIO OPTAR POR DIMINUIR O VALOR ATUAL DO ORÇAMENTO, ELE PODERÁ COLOCAR UMA INFORMAÇÃO DE JUSTIFICATIVA PARA O MOTIVO DA REMOÇÃO, SE QUISER. AO CONQUISTAR SUA META, O USUÁRIO PODERÁ EXPORTAR OS DADOS EM ALGUMA FORMA DE PDF OU ALGUM OUTRO DOCUMENTO, ASSIM COMO ALGUMA FORMA DE CONQUISTA, COMO O COMPARTILHAMENTO DA META ADQUIRIDA, BEM COMO (OPICIONAL E NADA IMPORTANTE), CASO HAJA UM SISTEMA PREMIUM DO SITE, LIBERAR O ACESSO À ALGUMAS FUNCIONALIDADES INICIALMENTE PAGAS POR TEMPO LIMITADO.
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
 
 require_once '../../conexao/banco.php';
+
 $doisAnosAtras = date('Y-m-d', strtotime('-1 year'));
 $cemAnosFrente = date('Y-m-d', strtotime('+10 years'));
+$id = $_SESSION['id'];
 
 
 

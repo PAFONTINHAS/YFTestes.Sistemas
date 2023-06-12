@@ -1,5 +1,14 @@
 <?php
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
+
+
 require_once 'conexao/banco.php';
+
+$id = $_SESSION['id'];
 
 // Verificar se a requisição é do tipo POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -15,10 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if($saldoInicial == NULL){
 
-            $sql = "UPDATE usuario SET saldo = 0.00 WHERE  id = 1";
+            $sql = "UPDATE usuario SET saldo = 0.00 WHERE  id = '$id'";
             $resultado = $conn -> query($sql);
 
-            if($resultado == FALSE){
+            if($resultado == TRUE ){
+
+                echo " Iniciando saldo com R$ 0,00";
+            }
+            else{
 
                 die('Erro ao adicionar o Saldo'. $conn->error);
 
@@ -27,10 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         else{
             // Verificando se o valor sacado é menor que o valor já depositado
 
-            $sql = "UPDATE usuario SET saldo = '$saldo' WHERE  id = 1";
-            $resultado = $conn -> query($sql);
+            $sql = "UPDATE usuario SET saldo = '$saldo' WHERE  id = $id";
 
-            if($resultado == TRUE){
+            if($conn -> query($sql)){
 
                 echo"Saldo Adicionado Com Sucesso!";
 

@@ -1,75 +1,29 @@
-<button type="submit" onclick="location.href='CadastroGestaoDespesa/Estruturado/CadastroDespesa/CadastroDespesa.php'">Cadastro de Despesas</button>
-<button type="submit" onclick="location.href='CadastroGestaoDespesa/Estruturado/GestaoDespesa/GestaoDespesa.php'">Gestão de Despesas</button>
-<button type="submit" onclick="location.href='CadastroGestaoReceita/CadastroReceita/CadastroReceita.php'">Cadastro de Receitas</button>
-<button type="submit" onclick="location.href='CadastroGestaoReceita/GestaoReceita/GestaoReceita.php'">Gestão de Receitas</button>
-<button type="submit" onclick="location.href='CadastroGestaoDespesa/Estruturado/CadastroDespesa/CadastroDespesas(frontend).php'">Cadastro de Despesas(Frontend)</button>
-<button type="submit" onclick="location.href='CadastroGestaoReceita/CadastroReceita/CadastroReceitas(frontend).php'">Cadastro De Receitas(FrontEnd)</button>
-<button type="submit" onclick="location.href='CadastroGestaoOrcamento/CadastroOrcamento/CadastroOrcamento.php'">Cadastrar Orçamentos</button>
-<button type="submit" onclick="location.href='CadastroGestaoOrcamento/VerOrcamentos/VerOrcamentos.php'">Ver Orçamentos</button>
-
 <?php
-
 require_once 'conexao/banco.php';
 
-$sql = "SELECT * FROM usuario WHERE id = 1";
-$resultado = $conn->query($sql);
-$dados = $resultado->fetch_assoc();
-
-$nome = $dados['nome'];
-$email = $dados['email'];
-$saldoEN = $dados['saldo'];
-
-    echo '<script>';
-    echo 'var saldo = ' . json_encode($saldoEN) . ';';
-    echo '</script>';
-
-    if($saldoEN != NULL){
-
-        $saldo = number_format($saldoEN, 2, ',', '.');
-    }
-    else{
-
-        $saldo = NULL;
-
-    }
-
+// Verifica se o usuário já está logado
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    header('Location: index.php');
+    exit;
+}
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
-        <title>Tela Inicial</title>
-    </head>
-    <body>
+<html>
+<head>
+    <title>Sistema de Login</title>
+</head>
+<body>
+    <h1>Sistema de Login</h1>
+    <form action="login.php" method="POST">
+        <label for="username">Email:</label>
+        <input type="email" name="email" id="username" required><br>
 
-        <h1>Bem vindo ao sistema </h1>
+        <label for="password">Senha:</label>
+        <input type="password" name="password" id="password" required><br>
 
-        <h1>
-            Seu nome é: <?php echo $nome; ?>
-            <br>
-            Seu email é: <?php echo $email; ?>
-            <br>
-            Seu saldo atual é: R$ <?php echo $saldo; ?>
-        </h1>
-
-<div id="modalSaldoInicial" class="modal" data-id="">
-    <div class="modal-conteudo">
-        <span class="fechar" onclick="fecharModal()">&times;</span>
-        <h2 id="modalTituloPaga">Saldo Inicial</h2>
-        <P>Notamos que é a primeira vez que acessa esse site: Antes de prosseguir insira o saldo inicial da sua conta:
-            <input type="text" id="pegarSaldo" class = "decimal-input" onInput= "mascaraMoeda(event)" name = "SaldoInicial">
-        </P>
-        <p>Você também poderá optar por não inserir o valor. Se fizer, as informações e cálculos sobre as suas receitas,
-            despesas e orçamentos poderão ficar imprecisas.</p>
-
-        <p>Você não verá essa tela novamente.</p>
-        <button class="botao-adicionar" name="enviar" onclick="adicionarSaldo()">Adicionar Saldo</button>
-        <button class="botao-fechar" name="enviar" onclick="fecharModal()">Fechar Sem Inserir o Valor</button>
-
-    </div>
-    </div>
+        <input type="submit" value="Login">
+    </form>
+    <p>Ainda não tem uma conta? <a href="registro.php">Registrar</a></p>
 </body>
 </html>

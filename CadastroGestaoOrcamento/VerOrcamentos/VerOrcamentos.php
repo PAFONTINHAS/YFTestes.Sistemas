@@ -1,4 +1,12 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
+$id = $_SESSION['id'];
+
 require_once '../../conexao/banco.php';
 
 $sql = "SELECT * FROM cadorc";
@@ -37,11 +45,17 @@ if ($result->num_rows > 0) {
         <?php
         while ($row = $result->fetch_assoc()) {
 
+            //convertendo valores do banco de dados
+            $validade = date('d/m/Y', strtotime(str_replace('/','-', $row['validade'])));
+            $valorOrc = number_format($row['valorOrc'], 2, ',', '.');
+            $valorAtual = number_format($row['valorAtual'], 2, ',', '.');
+
+
             echo "<tr id='linha' onclick=\"abrirModal(this)\" data-id=\"" . $row['id']. "\">
                 <td>" . $row['titulo'] . "</td>
-                <td>" . $row['validade'] . "</td>
-                <td> R$ " .$row['valorOrc']. "</td>
-                <td> R$ " . $row['valorAtual'] . "</td>
+                <td>" . $validade . "</td>
+                <td> R$ " .$valorOrc. "</td>
+                <td> R$ " . $valorAtual  . "</td>
                 <td>" . $row['prioridade']. "</td>
                 <td>" . $row['infoComp'] . "</td>
             </tr>";
@@ -54,6 +68,16 @@ if ($result->num_rows > 0) {
         echo "</tr>";
         echo"</table>";
         echo"<hr>";
+
+        //buscando o saldo do banco de dados
+        $query  = "SELECT saldo FROM usuario WHERE id = $id";
+        $resultado = $conn->query($query);
+        $consulta = $resultado->fetch_assoc();
+        $saldoBanco = $consulta['saldo'];
+
+            $saldo = number_format($saldoBanco, 2, ',', '.');
+
+        echo "<h2>Saldo da sua conta: " . $saldo . "</h2>";
 
 
             echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroOrcamento/CadastroOrcamento.php\'">Criar Novo Orçamento</button>';

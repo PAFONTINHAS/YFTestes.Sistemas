@@ -1,6 +1,14 @@
 <?php
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
+
+
 require_once '../../../conexao/banco.php';
 
+$id = $_SESSION['id'];
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
