@@ -5,7 +5,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: index.php');
     exit;
 }
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 require_once '../../conexao/banco.php';
 
@@ -34,7 +34,7 @@ if(isset($_POST['Cadastrar'])){
 
 
 
-        $sql = "INSERT INTO cadrec(tiporec, tiporecebe, valorrec, validade, repete, infocomp) VALUES ('$tipoReceita','$tipoRecebe','$valorRecDecimal','$validade','$repete', '$infocomp')";
+        $sql = "INSERT INTO cadrec(id_usuario,tiporec, tiporecebe, valorrec, validade, repete, infocomp) VALUES ('$id_usuario','$tipoReceita','$tipoRecebe','$valorRecDecimal','$validade','$repete', '$infocomp')";
 
         $query = mysqli_query($conn, $sql);
 

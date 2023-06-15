@@ -8,7 +8,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
 require_once 'conexao/banco.php';
 
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 // Verificar se a requisição é do tipo POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if($saldoInicial == NULL){
 
-            $sql = "UPDATE usuario SET saldo = 0.00 WHERE  id = '$id'";
+            $sql = "UPDATE usuario SET saldo = 0.00 WHERE  id = '$id_usuario'";
             $resultado = $conn -> query($sql);
 
             if($resultado == TRUE ){
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         else{
             // Verificando se o valor sacado é menor que o valor já depositado
 
-            $sql = "UPDATE usuario SET saldo = '$saldo' WHERE  id = $id";
+            $sql = "UPDATE usuario SET saldo = '$saldo' WHERE  id = $id_usuario";
 
             if($conn -> query($sql)){
 

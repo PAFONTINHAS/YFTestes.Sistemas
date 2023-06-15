@@ -7,7 +7,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
 require_once '../../conexao/banco.php';
 
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 if (isset($_POST['Criar'])){
 
@@ -29,7 +29,7 @@ if (isset($_POST['Criar'])){
     $valorOrcAtualDecimal = floatval($valorOrcAtualDecimal);
 
 
-    $sql = "INSERT INTO cadorc (titulo, validade, valorOrc, valorAtual, prioridade, infoComp) VALUES ('$titulo', '$validade', '$valorOrcDecimal', '$valorOrcAtualDecimal', '$prioridade', '$infoComp')";
+    $sql = "INSERT INTO cadorc (id_usuario, titulo, validade, valorOrc, valorAtual, prioridade, infoComp) VALUES ('$id_usuario','$titulo', '$validade', '$valorOrcDecimal', '$valorOrcAtualDecimal', '$prioridade', '$infoComp')";
 
 
     $query = mysqli_query($conn, $sql);

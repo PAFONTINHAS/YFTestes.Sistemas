@@ -1,7 +1,7 @@
 //CRIE O BANCO DE DADOS NO PHPMYADMIN(NÃO PRECISA CRIAR A TABELA)
 //ENTRE NO BANCO DE DADOS E APERTE NA COLUNA "SQL", O QUAL APARARECERÁ UM EDITOR PARA A LINGUAGEM SQL
 
-//CASO ESTEJA NO MYSQL WORKBENCH, CRIAR O BANCO DE DADOS VIA CÓDIGO
+//CASO ESTEJA NO MYSQL WORKBENCH OU ALGUM OUTRO EDITOR DE CÓDIGO, CRIAR O BANCO DE DADOS VIA CÓDIGO
 
 CREATE DATABASE yftestessistemas;
 
@@ -22,6 +22,7 @@ CREATE TABLE usuario (
 CREATE TABLE caddesp(
 
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INT NOT NULL,
     nome VARCHAR(100) NOT NULL,
     categoria VARCHAR(100) NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
@@ -31,12 +32,15 @@ CREATE TABLE caddesp(
     parcela INT NOT NULL,
     pago TINYINT NULL DEFAULT(0),
     data_pagamento DATE NOT NULL,
-    infocomp TEXT NULL
+    infocomp TEXT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+
 );
 
 CREATE TABLE cadrec(
 
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INT NOT NULL,
     tiporec VARCHAR(100) NOT NULL,
     tiporecebe VARCHAR(100) NOT NULL,
     valorrec DECIMAL(10,2) NOT NULL,
@@ -44,20 +48,24 @@ CREATE TABLE cadrec(
     recebido TINYINT NULL DEFAULT(0),
     repete INT NOT NULL,
     data_recebimento DATE NOT NULL,
-    infocomp TEXT NULL
+    infocomp TEXT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 );
 
 CREATE TABLE cadorc(
 
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id_usuario INT NOT NULL,
     titulo VARCHAR(255) NOT NULL,
     validade DATE NOT NULL,
     valorOrc DECIMAL(10,2) NOT NULL,
     valorAtual DECIMAL(10,2) NOT NULL,
     prioridade varchar(20) NULL,
-    infocomp TEXT NULL
+    infocomp TEXT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
 
 );
+
 //APERTE EM CONTINUAR
 
 

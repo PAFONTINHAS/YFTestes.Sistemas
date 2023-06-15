@@ -5,7 +5,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: index.php');
     exit;
 }
-$id = $_SESSION['id'];
+$id_usuario= $_SESSION['id'];
 
 require_once '../../conexao/banco.php';
 
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
         // Pegando valorAtual do banco de dados
-        $query = "SELECT * FROM cadorc WHERE id = '$idOrcamento'";
+        $query = "SELECT * FROM cadorc WHERE id = '$idOrcamento' AND id_usuario = '$id_usuario'";
         $result = $conn->query($query);
         $dadoValor = $result->fetch_assoc();
         $valorAtual = $dadoValor['valorAtual'];
@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
         //buscando o saldo do banco de dados
-        $query  = "SELECT saldo FROM usuario WHERE id = $id";
+        $query  = "SELECT saldo FROM usuario WHERE id = '$id_usuario'";
         $resultado = $conn->query($query);
         $consulta = $resultado->fetch_assoc();
         $saldoBanco = $consulta['saldo'];
@@ -62,8 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $deposito = $valorAtual + $valorDepositado;
 
-            $sql = "UPDATE cadorc SET valorAtual = '$deposito' WHERE  id = '$idOrcamento'";
-            $sql2 = "UPDATE usuario SET saldo = '$novoSaldo' WHERE id = 1";
+            $sql = "UPDATE cadorc SET valorAtual = '$deposito' WHERE  id = '$idOrcamento' AND id_usuario = '$id_usuario'";
+            $sql2 = "UPDATE usuario SET saldo = '$novoSaldo' WHERE id = '$id_usuario'";
 
             if($conn -> query($sql) && $conn -> query($sql2) && $operacao != "subtrair"){
 

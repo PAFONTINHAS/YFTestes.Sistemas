@@ -6,15 +6,15 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 
-require_once '../../../conexao/banco.php';
+require_once '../../conexao/banco.php';
 
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
 
     // Prepara a instrução SQL de exclusão
-    $sql = "DELETE FROM caddesp WHERE id = ?";
+    $sql = "DELETE FROM caddesp WHERE id = ? AND id_usuario = '$id_usuario'";
 
     // Prepara a declaração
     $stmt = $conn->prepare($sql);

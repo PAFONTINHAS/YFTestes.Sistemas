@@ -9,11 +9,11 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
 require_once 'conexao/banco.php';
 
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 
 
-$sql = "SELECT * FROM usuario WHERE id = $id";
+$sql = "SELECT * FROM usuario WHERE id = '$id_usuario'";
 $resultado = $conn->query($sql);
 $dados = $resultado->fetch_assoc();
 
@@ -46,7 +46,7 @@ $saldoEN = $dados['saldo'];
     </head>
     <body>
 
-<h1>Bem-vindo, <?php echo $_SESSION['email']; ?>!</h1>
+<h1>Bem-vindo, <?php echo $nome ?>!</h1>
 <p><a href="logout.php">Logout</a></p>
 
 
@@ -82,14 +82,16 @@ $saldoEN = $dados['saldo'];
 
 
 
-<button type="submit" onclick="location.href='CadastroGestaoDespesa/Estruturado/CadastroDespesa/CadastroDespesa.php'">Cadastro de Despesas</button>
-<button type="submit" onclick="location.href='CadastroGestaoDespesa/Estruturado/GestaoDespesa/GestaoDespesa.php'">Gestão de Despesas</button>
+<button type="submit" onclick="location.href='CadastroGestaoDespesa/CadastroDespesa/CadastroDespesa.php'">Cadastro de Despesas</button>
+<button type="submit" onclick="location.href='CadastroGestaoDespesa/GestaoDespesa/GestaoDespesa.php'">Gestão de Despesas</button>
 <button type="submit" onclick="location.href='CadastroGestaoReceita/CadastroReceita/CadastroReceita.php'">Cadastro de Receitas</button>
 <button type="submit" onclick="location.href='CadastroGestaoReceita/GestaoReceita/GestaoReceita.php'">Gestão de Receitas</button>
 <button type="submit" onclick="location.href='CadastroGestaoDespesa/Estruturado/CadastroDespesa/CadastroDespesas(frontend).php'">Cadastro de Despesas(Frontend)</button>
 <button type="submit" onclick="location.href='CadastroGestaoReceita/CadastroReceita/CadastroReceitas(frontend).php'">Cadastro De Receitas(FrontEnd)</button>
 <button type="submit" onclick="location.href='CadastroGestaoOrcamento/CadastroOrcamento/CadastroOrcamento.php'">Cadastrar Orçamentos</button>
 <button type="submit" onclick="location.href='CadastroGestaoOrcamento/VerOrcamentos/VerOrcamentos.php'">Ver Orçamentos</button>
+
+<button onclick= "location.href ='notificacoes.php'"> Aba de Notificações</button>
 
 </body>
 </html>

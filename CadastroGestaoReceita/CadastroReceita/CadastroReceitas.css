@@ -30,10 +30,6 @@ header{
 
 }
 
-.profile-details {
-
-}
-
 .sidebar{
   position: absolute;
   top: 100px;
@@ -249,7 +245,7 @@ header{
 .sidebar.close ~ .home-section{
   left: 78px;
   width: calc(100% - 78px);
-} 
+}
  .home-section .home-content{
   height: 60px;
   display: flex;
@@ -282,20 +278,20 @@ header{
     text-align: center;
 }
 
-  
+
 .cadastro-group {
     position: relative;
     top: -19px;
     margin-bottom: 20px;
     text-align: left;
-}  
+}
 
 .CadastroReceita h1 {
   position: relative;
     left: -40px;
     top: -44px;
     width:300px;
-    height:10px;  
+    height:10px;
 }
 
 
@@ -304,11 +300,11 @@ header{
     margin-bottom: 8px;
     font-weight: bold;
   }
-  
+
   .cadastro-group select{
-    height: 50px;   
+    height: 50px;
   }
-  
+
   .cadastro-group select[id="TipoReceita"],
   .cadastro-group select[id="TipoRecebe"],
   .cadastro-group input[type="text"],
@@ -316,7 +312,7 @@ header{
   .cadastro-group select[id="repete"],
   .cadastro-group textarea[id="infoComplementares"]
   .cadastro-group textarea {
-    
+
     max-width: 600px;
     width: 100%;
     height: 50px;
@@ -393,7 +389,7 @@ header{
     border-radius: 15px;
     cursor: pointer;
 }
-  
+
 .botao button:hover {
     background-color: #050023;
     color: #fff;
@@ -410,7 +406,7 @@ header{
     border-radius: 15px;
     cursor: pointer;
 }
-  
+
 .botao2 button:hover {
     background-color: #050023;
     color: #ffffff;
@@ -439,12 +435,12 @@ header{
       width: 100%;
       left: 0;
     }
-    
+
     .cadastro-group label[id="infoComplementares"],
     .cadastro-group textarea[id="infoComplementares"]{
       display: none;
     }
-  
+
     .botao2 button {
       display: none;
     }
@@ -455,7 +451,7 @@ header{
         right: -122px;
         padding: 61px 112px;
     }
-        
+
     .CadastroReceita {
         position: relative;
         right: 30px;
@@ -474,7 +470,7 @@ header{
     .cadastro-group select[id="repete"],
     .cadastro-group textarea[id="infoComplementares"]
     .cadastro-group textarea {
-        
+
         right: -900;
         max-width: 200px;
         width: 100%;
@@ -491,7 +487,7 @@ header{
 
 
 
-@media (max-width:1300px) {  
+@media (max-width:1300px) {
     .botao button {
         position: relative;
         right: -399px;
@@ -503,11 +499,11 @@ header{
         border-radius: 15px;
         cursor: pointer;
     }
-      
+
     .botao button:hover {
         background-color: #052270;
     }
-    
+
     .botao2 button {
         position: relative;
         right: -399px;
@@ -519,7 +515,7 @@ header{
         border-radius: 15px;
         cursor: pointer;
     }
-      
+
     .botao2 button:hover {
         background-color: #052270;
     }

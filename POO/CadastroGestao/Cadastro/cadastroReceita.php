@@ -1,11 +1,45 @@
 <?php
-
 session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: index.php');
-    exit;
+
+if (!isset($_SESSION['id_usuario']) || empty($_SESSION['id_usuario'])) {
+
+    header('Location: ../../index.php'); // Redireciona para a página de login
+    exit();
 }
-$id_usuario = $_SESSION['id'];
+
+$id_usuario = $_SESSION['id_usuario'];
+
+
+
+include('../../classes/Receita.php');
+$database = new Conexao();
+$db = $database->getConnection();
+$receita = new Receita($db);
+
+
+if(isset($_POST['Cadastrar'])){
+
+    $tipoReceita = $_POST["TipoReceita"];
+    $tipoReceber = $_POST["TipoReceber"];
+    $valorReceita = $_POST["valorReceita"];
+    $dataValidade = $_POST["validade"];
+    $repete = $_POST["repete"];
+    $infocomp = $_POST["infoComp"];
+
+    if ($receita->cadastrarReceita($id_usuario,$tipoReceita,$tipoReceber,$valorReceita,$dataValidade,$repete,$infocomp) == TRUE){
+
+        return true;
+
+    }
+    else{
+        echo "Erro ao cadastrar";
+    }
+
+
+}
+
+
+
 
 $umAnoAtras = date( 'Y-m-d', strtotime('-1 year'));
 $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
@@ -19,77 +53,17 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="script.js"></script>
+    <script src="mascaraMoeda.js"></script>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.1.0/autoNumeric.min.js"></script>
 
-
-
-    <style>
-  /* Estilos para o formulário */
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  /* Estilos para os rótulos */
-  label {
-    font-weight: bold;
-  }
-
-  /* Estilos para as caixas de seleção */
-  select {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-
-  /* Estilos para os campos de entrada de texto */
-  input[type="text"],
-  input[type="number"],
-  input[type="date"] {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-
-  /* Estilos para o botão de enviar */
-  input[type="submit"] {
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  /* Estilos para o botão de enviar quando o mouse estiver sobre ele */
-  input[type="submit"]:hover {
-    background-color: #45a049;
-  }
-  #infoComplementares {
-    width: 100%;
-    height: 100px;
-    border-radius:10px;
-
-  }
-  .botaodir{
-    position:absolute;
-    top:83%;
-    left:36%;
-    width:29%;
-  }
-</style>
-
 </head>
 <body>
 
-<form action= "cadastrar.php" method= "POST">
+<form  method= "POST">
 
 <label for="TipoReceita">Tipo da Receita</label>
   <select id="TipoReceita" name="TipoReceita">
@@ -108,7 +82,7 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
 
 
   <label for="TipoRecebe">Forma de Recebimento</label>
-  <select id="TipoRecebe" name="TipoRecebe">
+  <select id="TipoRecebe" name="TipoReceber">
     <option> Selecionar</option>
     <option value="Dinheiro">Dinheiro</option>
     <option value="Cheque">Cheque</option>
@@ -122,7 +96,7 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
   </select>
 
   <label for="valorRec">Valor da Receita:</label>
-  <input type="text" name="valorRec" class="decimal-input" onInput="mascaraMoeda(event);">
+  <input type="text" name="valorReceita" class="decimal-input" onInput="mascaraMoeda(event);">
 
   <label for="dataRecebe">Validade do Recebimento:</label>
   <input type="date" id="validade" name="validade" min="<?php echo $umAnoAtras; ?>" max="<?php echo $umAnoFrente; ?>" required>
@@ -148,45 +122,15 @@ $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));
     <!-- Outras opções de imóvel associado -->
   </select>
   <label for="infoComplementares">Informações complementares:</label>
-  <textarea id="infoComplementares" name="infoComplementares"></textarea>
+  <textarea id="infoComplementares" name="infoComp"></textarea>
 
 
   <button type="submit" name = "Cadastrar"> Cadastrar Receita</button>
 </form>
 
-<button onclick ="location.href='../GestaoReceita/GestaoReceita.php'" class= "botaodir">Gestão de Receitas</button>
+<button onclick ="location.href='../Gestao/GestaoReceita.php'" class= "botaodir">Gestão de Receitas</button>
 
 
 
 </body>
-<script>
-
-$(document).ready(function() {
-    $('.decimal-input').autoNumeric('init', {
-      decimalCharacter: ',',
-      digitGroupSeparator: '.',
-      decimalPlaces: 2,
-      currencySymbol: '',
-      unformatOnSubmit: true
-    });
-  });
-
-  function mascaraMoeda(event) {
-    const onlyDigits = event.target.value
-      .split("")
-      .filter(s => /\d/.test(s))
-      .join("")
-      .padStart(3, "0")
-    const digitsFloat = onlyDigits.slice(0, -2) + "." + onlyDigits.slice(-2)
-    event.target.value = maskCurrency(digitsFloat)
-  }
-
-  function maskCurrency(valor, locale = 'pt-BR', currency = 'BRL') {
-    return new Intl.NumberFormat(locale, {
-      style: 'currency',
-      currency
-    }).format(valor)
-  }
-
-</script>
 </html>

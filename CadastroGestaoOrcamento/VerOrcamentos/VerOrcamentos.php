@@ -5,11 +5,11 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: index.php');
     exit;
 }
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 require_once '../../conexao/banco.php';
 
-$sql = "SELECT * FROM cadorc";
+$sql = "SELECT * FROM cadorc WHERE id_usuario = '$id_usuario'";
 $result = $conn->query($sql);
 $contagem = 0;
 $dataAtual = date("Y-m-d");
@@ -70,7 +70,7 @@ if ($result->num_rows > 0) {
         echo"<hr>";
 
         //buscando o saldo do banco de dados
-        $query  = "SELECT saldo FROM usuario WHERE id = $id";
+        $query  = "SELECT saldo FROM usuario WHERE id = '$id_usuario' ";
         $resultado = $conn->query($query);
         $consulta = $resultado->fetch_assoc();
         $saldoBanco = $consulta['saldo'];
@@ -94,11 +94,8 @@ if ($result->num_rows > 0) {
         <p>Valor do Orçamento: R$ <span id="modalValorOrc"></span></p>
         <p>Valor Investido: R$ <span id="modalValorAtual"></span></p>
         <p>Prioridade: <span id="modalPrioridade"></span></p>
-        <p>Insira o valor para sacar ou depositar :<input type="text" class = "decimal-input" onInput = "mascaraMoeda(event)" name = "modalValorInserir" id = "modalValorInserir" required>
-</p>
-
+        <p>Insira o valor para sacar ou depositar :<input type="text" class = "decimal-input" onInput = "mascaraMoeda(event)" name = "modalValorInserir" id = "modalValorInserir" required></p>
         <p>Informações Complementares: <span id="modalInfoComp"></span></p>
-
         <button class="botao-excluir" name="excluir" onclick="excluirOrcamento()">Excluir</button>
         <button class="botao-sacar" name="sacar" onclick="sacarValor()">Sacar</button>
         <button class="botao-depositar" name="depositar" onclick="depositarValor()">Depositar</button>

@@ -4,6 +4,7 @@ function abrirModal(row) {
     var modalDespesaPaga = document.getElementById("modalDespesaPaga");
     var modalDespesaNaoPaga = document.getElementById("modalDespesaNaoPaga");
 
+
     // Define o ID da despesa no atributo data-id do modal
     modalDespesaPaga.setAttribute("data-id", id);
     modalDespesaNaoPaga.setAttribute("data-id", id);
@@ -108,7 +109,7 @@ function pagarDespesa() {
                     row.classList.remove("Não");
                     row.classList.add("Sim");
                 }
-                fecharModalDespesaNaoPaga();
+                fecharModalDNP  ();
         }
 
 
@@ -138,7 +139,8 @@ function excluirDespesa() {
             }
         };
         xhr.send('id=' + idDespesa);
-        fecharModal();
+        fecharModalDNP();
+        fecharModalDP();
     }
 }
 

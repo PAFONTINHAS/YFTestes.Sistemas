@@ -3,7 +3,7 @@ require_once 'conexao/banco.php';
 
 // Verifica se o usuário já está logado
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
-    header('Location: index.php');
+    header('Location: homePage.php');
     exit;
 }
 ?>

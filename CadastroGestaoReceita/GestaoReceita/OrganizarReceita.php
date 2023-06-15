@@ -1,13 +1,6 @@
 <?php
 
 
-session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: index.php');
-    exit;
-}
-$id = $_SESSION['id'];
-
 require_once '../../conexao/banco.php';
 
 function organizacao($receita, $recebimento, $repete, $valorRec, $vencimento){

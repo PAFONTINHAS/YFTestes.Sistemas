@@ -6,7 +6,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 
-require_once '../../../conexao/banco.php';
+require_once '../../conexao/banco.php';
 
 $id = $_SESSION['id'];
 
@@ -37,21 +37,21 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
   <label for="categoria">Categoria:</label>
   <select id="categoria" name="categoria">
     <option>Selecionar</option>
-    <option value="Alimentacao">Alimentação</option>
-    <option value="Moradia">Moradia</option>
-    <option value="Educacao">Educação</option>
-    <option value="Saude">Saúde</option>
-    <option value="Entretenimento">Entretenimento</option>
-    <option value="Viagens">Viagens</option>
-    <option value="Vestuario">Vestuário</option>
     <option value="Acessorios">Acessórios</option>
-    <option value="Eletronicos">Eletrônicos</option>
-    <option value="Seguros">Seguros</option>
-    <option value="ServicoPublico">Servico Público</option>
+    <option value="Alimentacao">Alimentação</option>
     <option value="CuidadosPessoais">Cuidados Pessoais</option>
     <option value="Doacoes-Caridade">Doações/Caridade</option>
+    <option value="Educacao">Educação</option>
+    <option value="Eletronicos">Eletrônicos</option>
+    <option value="Entretenimento">Entretenimento</option>
     <option value="Impostos">Impostos</option>
+    <option value="Moradia">Moradia</option>
+    <option value="Saude">Saúde</option>
+    <option value="Seguros">Seguros</option>
+    <option value="ServicoPublico">Servico Público</option>
     <option value="SuperMecado">Super Mercado</option>
+    <option value="Viagens">Viagens</option>
+    <option value="Vestuario">Vestuário</option>
     <!-- Outras opções de categoria -->
   </select>
 
@@ -68,11 +68,11 @@ $cemAnosFrente = date('Y-m-d', strtotime('+100 years'));
     <option value="Dinheiro">Dinheiro</option>
     <option value="CartaoCredito">Cartão de Crédito</option>
     <option value="CartaoDebito">Cartão de Débito</option>
+    <option value="Cheque">Cheque</option>
     <option value="Transferencia">Transferência Bancária</option>
     <option value="Boleto">Boleto Bancário</option>
     <option value="PayPal">PayPal</option>
     <option value="Pix">Pix</option>
-    <option value="Cheque">Cheque</option>
   </select>
 
   <label for="imovelAssociado">Imóvel associado:</label>

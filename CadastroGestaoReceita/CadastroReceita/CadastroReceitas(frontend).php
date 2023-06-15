@@ -1,11 +1,11 @@
-<?php
+git ad<?php
 
 session_start();
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: index.php');
     exit;
 }
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 $umAnoAtras = date( 'Y-m-d', strtotime('-1 year'));
 $umAnoFrente = date( 'Y-m-d', strtotime('+1 year'));

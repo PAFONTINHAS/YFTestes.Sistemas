@@ -1,30 +1,38 @@
 <?php
 
 session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: index.php');
-    exit;
+if (!isset($_SESSION['id_usuario']) || empty($_SESSION['id_usuario'])) {
+
+    header('Location: ../../index.php'); // Redireciona para a página de login
+    exit();
 }
-$id_usuario = $_SESSION['id'];
 
 
-require_once '../../conexao/banco.php';
+include ('../../../classes/Orcamento.php');
+
+$orcamento = new Orcamento($db);
+
+
+$id_usuario = $_SESSION['id_usuario'];
+
 
 
 // Verificar se foi fornecido um ID válido na query string
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $idOrcamento = $_GET['id'];
+    $conn = $db;
+
 
     // Preparar a consulta SQL e executá-la
-    $stmt = $conn->prepare("SELECT * FROM cadorc WHERE id = ? AND id_usuario = '$id_usuario'");
-    $stmt->bind_param("i", $idOrcamento);
+    $query = "SELECT * FROM orcamento WHERE id = :idOrcamento AND id_usuario = :id_usuario";
+    $stmt = $conn->prepare($query);
+    $stmt->bindParam(':idOrcamento', $idOrcamento, PDO::PARAM_INT);
+    $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($result->num_rows > 0) {
-
-
-        $dadosOrcamento = $result->fetch_assoc();
+    if ($result !== false) {
+        $dadosOrcamento = $result;
 
         $titulo = $dadosOrcamento['titulo'];
         $validade = $dadosOrcamento['validade'];
@@ -38,15 +46,12 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
         $validadeBR = date("d/m/Y", strtotime(str_replace('-', '/', $validade)));
 
-
         $dadosOrcamento['titulo'] = $titulo;
         $dadosOrcamento['validade'] = $validadeBR;
         $dadosOrcamento['valorOrc'] = $valorOrcBR;
         $dadosOrcamento['valorAtual'] = $valorAtualBR;
         $dadosOrcamento['prioridade'] = $prioridade;
         $dadosOrcamento['infoComp'] = $infoComp;
-
-
 
         // Agora você pode retornar os dados do orcamento como uma resposta JSON
         $response = array(
@@ -63,8 +68,8 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     }
 
     // Fechar a conexão
-    $stmt->close();
-    $conn->close();
+    $stmt = null;
+    $conn = null;
 } else {
     // Caso o ID não tenha sido fornecido ou seja inválido, retorne um erro ou uma resposta vazia, conforme a sua necessidade
     // Por exemplo:

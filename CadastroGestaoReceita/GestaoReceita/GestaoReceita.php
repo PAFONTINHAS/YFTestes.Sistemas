@@ -1,17 +1,16 @@
 <?php
-
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: index.php');
+    exit;
+}
 
 require_once '../../conexao/banco.php';
 require_once 'OrganizarReceita.php';
-// session_start();
-// if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-//     header('Location: index.php');
-//     exit;
-// }
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 
-$sql = "SELECT * FROM cadrec";
+$sql = "SELECT * FROM cadrec WHERE id_usuario = '$id_usuario'";
 $result = $conn->query($sql);
 $contagem = 0;
 $dataAtual = date("Y-m-d");
@@ -35,7 +34,6 @@ if ($result->num_rows > 0) {
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
-
 <table class='tabela-receitas'>
     <tr>
         <th>Tipo da Receita</th>
@@ -71,14 +69,14 @@ if ($result->num_rows > 0) {
 
             if($repeteFinalizada == 0){
 
-                $sql = "UPDATE cadrec SET recebido = 1 WHERE id = '$id'";
+                $sql = "UPDATE cadrec SET recebido = 1 WHERE id = '$id' AND id_usuario = '$id_usuario'";
                 $recebidoClass = "Sim";
                 $resultQuery = $conn->query($sql);
 
             }
             else{
 
-                $sql = "UPDATE cadrec SET recebido = 0 WHERE id = '$id'";
+                $sql = "UPDATE cadrec SET recebido = 0 WHERE id = '$id' AND id_usuario = '$id_usuario'";
                 $recebidoClass = "Não";
                 $resultQuery = $conn->query($sql);
             }
@@ -102,25 +100,25 @@ if ($result->num_rows > 0) {
 
 
     // Cálculo para todas as receitas cadastradas no banco de dados
-    $sql = "SELECT SUM(valorrec) AS soma_valores, COUNT(*) AS valor_total FROM cadrec";
+    $sql = "SELECT SUM(valorrec) AS soma_valores, COUNT(*) AS valor_total FROM cadrec WHERE id_usuario = '$id_usuario'";
     $result = $conn->query($sql);
     $dados = $result->fetch_assoc();
     $valorTotal = $dados['soma_valores'];
 
     // Cálculo para todas as receitass que já foram pagas
-    $query = "SELECT SUM(valorrec) AS soma_receitas_recebidas FROM cadrec WHERE recebido = 1";
+    $query = "SELECT SUM(valorrec) AS soma_receitas_recebidas FROM cadrec WHERE recebido = 1 AND id_usuario = '$id_usuario'";
     $resultado = $conn->query($query);
     $recebidos = $resultado->fetch_assoc();
     $valorReceitasPagas = $recebidos['soma_receitas_recebidas'];
 
     //Cálculo para todas as receitas finalizadas
-    $query2 = "SELECT SUM(valorrec) AS soma_receitas_final FROM cadrec WHERE repete = 0";
+    $query2 = "SELECT SUM(valorrec) AS soma_receitas_final FROM cadrec WHERE repete = 0 AND id_usuario = '$id_usuario'";
     $resultado2 = $conn->query($query2);
     $finalizados = $resultado2->fetch_assoc();
     $valorReceitasFinalizadas = $finalizados['soma_receitas_final'];
 
     // Pegando o dado do saldo do banco de dados
-    $query4 = "SELECT saldo FROM usuario WHERE id = $id";
+    $query4 = "SELECT saldo FROM usuario WHERE id = '$id_usuario' ";
     $resultado3 = $conn->query($query4);
     $consulta2 = $resultado3->fetch_assoc();
     $saldoBanco = $consulta2['saldo'];
@@ -151,6 +149,7 @@ if ($result->num_rows > 0) {
 
 
 <button class="botao-cadastro" onclick="location.href='../CadastroReceita/CadastroReceita.php'">Cadastrar nova receita</button>
+<button class="botao-cadastro" onclick="location.href='../../homePage.php'">Página Inicial</button>
 
    <!-- Modal para receitas pagas -->
    <div id="modalReceitaRecebida" class="modal" data-id="">

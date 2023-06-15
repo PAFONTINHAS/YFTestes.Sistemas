@@ -1,20 +1,19 @@
     <?php
-    // session_start();
-    // if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    //     header('Location: index.php');
-    //     exit;
-    // }
+    session_start();
+    if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+        header('Location: index.php');
+        exit;
+    }
 
-    require_once '../../../conexao/banco.php';
+    require_once '../../conexao/banco.php';
     require 'OrganizarDespesa.php';
+    $id_usuario = $_SESSION['id'];
 
-    $sql = "SELECT * FROM caddesp";
+    $sql = "SELECT * FROM caddesp WHERE id_usuario = '$id_usuario'";
     $result = $conn->query($sql);
     $contagem = 0;
     $dataAtual = date("Y-m-d");
-    $id = $_SESSION['id'];
 
-    echo $id;
     if ($result->num_rows > 0) {
     ?>
 
@@ -73,14 +72,14 @@
 
                 if($parcelaFinalizada == 0){
 
-                    $sql = "UPDATE caddesp SET pago = 1 WHERE id = '$id'";
+                    $sql = "UPDATE caddesp SET pago = 1 WHERE id = '$id' AND id_usuario = '$id_usuario'";
                     $pagoClass = "Sim";
                     $resultQuery = $conn->query($sql);
 
                 }
                 else{
 
-                    $sql = "UPDATE caddesp SET pago = 0 WHERE id = '$id'";
+                    $sql = "UPDATE caddesp SET pago = 0 WHERE id = '$id' AND id_usuario = '$id_usuario'";
                     $pagoClass = "Não";
                     $resultQuery = $conn->query($sql);
                 }
@@ -108,26 +107,26 @@
         echo"<hr>";
 
         // Cálculo para todas as receitas cadastradas no banco de dados
-        $sql = "SELECT SUM(valor) AS soma_valores, COUNT(*) AS valor_total FROM caddesp";
+        $sql = "SELECT SUM(valor) AS soma_valores, COUNT(*) AS valor_total FROM caddesp WHERE id_usuario = '$id_usuario'";
         $result = $conn->query($sql);
         $dados = $result->fetch_assoc();
         $valorTotal = $dados['soma_valores'];
 
         // Cálculo para todas as despesas que já foram pagas
-        $query = "SELECT SUM(valor) AS soma_despesas_pagas FROM caddesp WHERE pago = 1";
+        $query = "SELECT SUM(valor) AS soma_despesas_pagas FROM caddesp WHERE pago = 1 AND id_usuario = '$id_usuario'";
         $resultado = $conn->query($query);
         $recebidos = $resultado->fetch_assoc();
         $valorDespesasPagas = $recebidos['soma_despesas_pagas'];
 
         //Cálculo para todas as despesas finalizadas
-        $query2 = "SELECT SUM(valor) AS soma_despesas_final FROM caddesp WHERE parcela = 0";
+        $query2 = "SELECT SUM(valor) AS soma_despesas_final FROM caddesp WHERE parcela = 0 AND id_usuario = '$id_usuario'";
         $resultado2 = $conn->query($query2);
         $finalizados = $resultado2->fetch_assoc();
         $valorDespesasFinalizadas = $finalizados['soma_despesas_final'];
 
         // Pegando o saldo do usuário
 
-        $query3 = "SELECT saldo FROM usuario WHERE id = '$id'";
+        $query3 = "SELECT saldo FROM usuario WHERE id = '$id_usuario'";
         $resultado3 = $conn->query($query3);
         $consulta = $resultado3->fetch_assoc();
         $saldoBanco = $consulta['saldo'];
@@ -157,6 +156,7 @@
 
 
             echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroDespesa/CadastroDespesa.php\'">Cadastrar nova despesa</button>';
+            echo '<button class="botao-cadastro" onclick="location.href=\'../../homePage.php\'">Página Inicial</button>';
 
     ?>
 

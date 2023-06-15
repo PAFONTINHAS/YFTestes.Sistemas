@@ -7,7 +7,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 
-require_once '../../../conexao/banco.php';
+require_once '../../conexao/banco.php';
 
 $id = $_SESSION['id'];
 
@@ -22,14 +22,7 @@ if(isset($_POST['Cadastrar'])){
     $parcela = $_POST["parcelas"];
     $infocomp = $_POST["infoComplementares"];
 
-    // if (empty($nomeDespesa) || empty($categoria) || empty($valor) || empty($dataVencimento) || empty($formaPagamento) || empty($imovelAssociado))
-    // {
-    //     echo "<script>alert('verifique que todas as informações estão corretas')</script>";
-    //     header("Location: CadastroDespesa.php");
-
-    // }
-
-            // Remover símbolo "R$", pontos de milhar e substituir a vírgula pelo ponto
+    // Remover símbolo "R$", pontos de milhar e substituir a vírgula pelo ponto
     // Remover símbolo "R$", pontos de milhar e substituir a vírgula pelo ponto
     $valorDespFormatado = preg_replace('/[^\d,]/', '', $valor); // Resultado: 12,233.12
 
@@ -42,7 +35,7 @@ if(isset($_POST['Cadastrar'])){
     // Restante do código...
 
 
-        $sql = "INSERT INTO caddesp(nome, categoria, valor, vencimento, formapag, imovelassoc, parcela, infocomp) VALUES ('$nomeDespesa','$categoria','$valorDespDecimal','$dataVencimento','$formaPagamento','$imovelAssociado','$parcela', '$infocomp')";
+        $sql = "INSERT INTO caddesp(id_usuario, nome, categoria, valor, vencimento, formapag, imovelassoc, parcela, infocomp) VALUES ('$id','$nomeDespesa','$categoria','$valorDespDecimal','$dataVencimento','$formaPagamento','$imovelAssociado','$parcela', '$infocomp')";
 
         $query = mysqli_query($conn, $sql);
 

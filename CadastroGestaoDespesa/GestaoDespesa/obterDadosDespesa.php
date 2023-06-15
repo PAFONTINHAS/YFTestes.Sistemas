@@ -6,17 +6,17 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 
-require_once '../../../conexao/banco.php';
+require_once '../../conexao/banco.php';
 require 'OrganizarDespesa.php';
 
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 // Verificar se foi fornecido um ID válido na query string
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $idDespesa = $_GET['id'];
 
     // Preparar a consulta SQL e executá-la
-    $stmt = $conn->prepare("SELECT * FROM caddesp WHERE id = ?");
+    $stmt = $conn->prepare("SELECT * FROM caddesp WHERE id = ? AND id_usuario = '$id_usuario'");
     $stmt->bind_param("i", $idDespesa);
     $stmt->execute();
     $result = $stmt->get_result();

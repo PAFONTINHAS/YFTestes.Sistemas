@@ -3,17 +3,43 @@
 
 // Ver Orçamentos: Poderá ser executado da mesma forma que a gestão de despesas e receitas, uma forma de tabela de acordo com os atributos cadastrados na página de criação de orçamentos, e acessado com as informações através de uma modal box. POSSÍVEL INCREMENTO: FAZER COM QUE O USUÁRIO POSSA ALTERAR O VALOR DA FORMA QUE PUDER, PODENDO (SE QUISER) REGISTRAR A DATA DA ADIÇÃO OU SUBTRAÇÃO. NA TELA DE INFORMAÇÃO DE ORÇAMENTO, PODEMOS ADICIONAR UMA ABA DE PROGRESSO PARA QUE O USUÁRIO ACOMPANHE O PROGRESSO EM FORMA DE PORCENTAGEM, QUE VAI VARIANDO DE ACORDO COM A ADIÇÃO OU REMOÇÃO DE DINHEIRO. SE O USUÁRIO OPTAR POR DIMINUIR O VALOR ATUAL DO ORÇAMENTO, ELE PODERÁ COLOCAR UMA INFORMAÇÃO DE JUSTIFICATIVA PARA O MOTIVO DA REMOÇÃO, SE QUISER. AO CONQUISTAR SUA META, O USUÁRIO PODERÁ EXPORTAR OS DADOS EM ALGUMA FORMA DE PDF OU ALGUM OUTRO DOCUMENTO, ASSIM COMO ALGUMA FORMA DE CONQUISTA, COMO O COMPARTILHAMENTO DA META ADQUIRIDA, BEM COMO (OPICIONAL E NADA IMPORTANTE), CASO HAJA UM SISTEMA PREMIUM DO SITE, LIBERAR O ACESSO À ALGUMAS FUNCIONALIDADES INICIALMENTE PAGAS POR TEMPO LIMITADO.
 session_start();
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: index.php');
-    exit;
+
+if (!isset($_SESSION['id_usuario']) || empty($_SESSION['id_usuario'])) {
+
+  header('Location: ../../index.php'); // Redireciona para a página de login
+  exit();
 }
 
-require_once '../../conexao/banco.php';
+
+
+include('../../classes/Orcamento.php');
+$database = new Conexao();
+$db = $database->getConnection();
+$orcamento = new Orcamento($db);
+
+$id_usuario = $_SESSION['id_usuario'];
+
 
 $doisAnosAtras = date('Y-m-d', strtotime('-1 year'));
 $cemAnosFrente = date('Y-m-d', strtotime('+10 years'));
 
+if(isset($_POST['Criar'])){
+    $titulo = $_POST['titulo'];
+    $validade = $_POST['validade'];
+    $valorOrcamento = $_POST['valorOrcamento'];
+    $valorAtual = $_POST['valorAtual'];
+    $prioridade = $_POST['prioridade'];
+    $infoComp = $_POST['infoComp'];
 
+    if ($orcamento->cadastrarOrcamento($id_usuario,$titulo,$validade,$valorOrcamento,$valorAtual,$prioridade,$infoComp) == TRUE){
+
+        return true;
+
+    }
+    else{
+        echo "Erro ao cadastrar";
+    }
+}
 
 ?>
 
@@ -24,12 +50,12 @@ $cemAnosFrente = date('Y-m-d', strtotime('+10 years'));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Orçamentos</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="mascaraMoeda.js"></script>
 </head>
 <body>
 
 
-<form action= "criarOrcamento.php" method= "POST">
+<form method= "POST">
   <label for="titulo">Título do Orçamento:</label>
   <input type="text" id="titulo" name="titulo" required>
 
@@ -61,7 +87,7 @@ $cemAnosFrente = date('Y-m-d', strtotime('+10 years'));
 
 
     <button type="submit" name = "Criar"> Criar Orçamento</button>
-    <button onclick = "location.href= '../VerOrcamentos/VerOrcamentos.php'"> Ver Orçamentos </button>
+    <button onclick = "location.href= '../Gestao/gestaoOrcamento.php'"> Ver Orçamentos </button>
 </form>
 
 

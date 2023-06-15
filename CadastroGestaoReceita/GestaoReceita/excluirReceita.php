@@ -5,7 +5,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: index.php');
     exit;
 }
-$id = $_SESSION['id'];
+$id_usuario = $_SESSION['id'];
 
 
 require_once '../../conexao/banco.php';
@@ -15,7 +15,7 @@ if (isset($_POST['id'])) {
     $id = $_POST['id'];
 
     // Prepara a instrução SQL de exclusão
-    $sql = "DELETE FROM cadrec WHERE id = ?";
+    $sql = "DELETE FROM cadrec WHERE id = ? AND id_usuario = '$id_usuario'";
 
     // Prepara a declaração
     $stmt = $conn->prepare($sql);
