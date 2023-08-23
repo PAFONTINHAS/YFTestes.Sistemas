@@ -47,7 +47,7 @@ if ($result->num_rows > 0) {
 
         $id = $row['id'];
 
-
+        $repeteTeste = $row["repete"];
         $recebidoClass = $row["recebido"] ? "Sim" : "Não";
 
         $contagem ++;
@@ -67,10 +67,14 @@ if ($result->num_rows > 0) {
         $repeticaoAcimaObj = new DateTime($repeticaoAcima);
 
         if ($dataAtualObj >= $novaRepeticaoObj && $dataAtualObj < $repeticaoAcimaObj) {
-            $recebidoClass = "Não";
-            $sql = "UPDATE cadrec SET recebido = 0 WHERE id = '$id'";
-            $resultQuery = $conn->query($sql);
-
+            if($repeteTeste != 0){
+                $recebidoClass = "Não";
+                $sql = "UPDATE cadrec SET recebido = 0 WHERE id = '$id'";
+                $resultQuery = $conn->query($sql);
+            }
+            else{
+                return;
+            }
         }elseif($dataAtualObj != $novaRepeticaoObj && $dataAtual < $repeticaoAcimaObj ){
             if($row['recebido'] == 1){
                 $recebidoClass = "Sim";

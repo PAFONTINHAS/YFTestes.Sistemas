@@ -1,18 +1,18 @@
-<?php
-require_once '../../../conexao/banco.php';
-require 'OrganizarDespesa.php';
+    <?php
+    require_once '../../../conexao/banco.php';
+    require 'OrganizarDespesa.php';
 
-$sql = "SELECT * FROM caddesp";
-$result = $conn->query($sql);
-$contagem = 0;
-$dataAtual = date("Y-m-d");
+    $sql = "SELECT * FROM caddesp";
+    $result = $conn->query($sql);
+    $contagem = 0;
+    $dataAtual = date("Y-m-d");
 
-if ($result->num_rows > 0) {
-?>
+    if ($result->num_rows > 0) {
+    ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,9 +24,9 @@ if ($result->num_rows > 0) {
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
-</head>
-
-<body>
+    </head>
+    cxzv
+    <body>
     <table class='tabela-despesas'>
         <tr>
             <th>Nome da Despesa</th>
@@ -46,6 +46,7 @@ if ($result->num_rows > 0) {
             $id = $row['id'];
             $contagem ++;
 
+            $parcelaTeste = $row['parcela'];
 
             $pagoClass = ($row["pago"] == 1) ? "Sim" : "Não";
 
@@ -60,24 +61,22 @@ if ($result->num_rows > 0) {
 
             $parcelaAcima = date("Y-m-d", strtotime($vencimentoEN . "+1 days"));
 
-            // echo "A data Atual é: " . $dataAtual . "\n\n\n";
-            // echo "A data de vencimento é: " . $vencimentoEN . "\n\n\n";
-            // echo "A data da Nova Parcela é: " . $novaParcela . "\n\n\n";
-            // echo "A data da Parcela Acima é: " . $parcelaAcima . "\n\n\n";
-            // echo "<br>";
-            // echo "<br>";
 
-          // Converter as datas para objetos DateTime
+            // Converter as datas para objetos DateTime
             $dataAtualObj = new DateTime($dataAtual);
             $novaParcelaObj = new DateTime($novaParcela);
             $parcelaAcimaObj = new DateTime($parcelaAcima);
 
             // Verificar se a data atual está dentro do intervalo
-            if ($dataAtualObj >= $novaParcelaObj && $dataAtualObj < $parcelaAcimaObj) {
-                $pagoClass = "Não";
-                $sql = "UPDATE caddesp SET pago = 0 WHERE id = '$id'";
-                $resultQuery = $conn->query($sql);
-
+            if ($dataAtualObj >= $novaParcelaObj && $dataAtualObj < $parcelaAcimaObj ) {
+                if($parcelaTeste != 0 ){
+                    $pagoClass = "Não";
+                    $sql = "UPDATE caddesp SET pago = 0 WHERE id = '$id'";
+                    $resultQuery = $conn->query($sql);
+                }
+                else{
+                    return;
+                }
             }elseif($dataAtualObj != $novaParcelaObj && $dataAtual < $parcelaAcimaObj ){
                 if($row['pago'] == 1){
                     $pagoClass = "Sim";
@@ -162,8 +161,8 @@ if ($result->num_rows > 0) {
     ?>
 
 
-   <!-- Modal para despesas pagas -->
-<div id="modalDespesaPaga" class="modal" data-id="">
+    <!-- Modal para despesas pagas -->
+    <div id="modalDespesaPaga" class="modal" data-id="">
     <div class="modal-conteudo">
         <span class="fechar" onclick="fecharModalDP()">&times;</span>
         <h2 id="modalTituloPaga"></h2>
@@ -179,10 +178,10 @@ if ($result->num_rows > 0) {
         <p>Informações Complementares: <span id="modalInformacoesComplementaresPaga"></span></p>
         <button class="botao-excluir" name="excluir" onclick="excluirDespesa()">Excluir</button>
     </div>
-</div>
+    </div>
 
-<!-- Modal para despesas não pagas -->
-<div id="modalDespesaNaoPaga" class="modal" data-id="">
+    <!-- Modal para despesas não pagas -->
+    <div id="modalDespesaNaoPaga" class="modal" data-id="">
     <div class="modal-conteudo">
         <span class="fechar" onclick="fecharModalDNP()">&times;</span>
         <h2 id="modalTituloNaoPaga"></h2>
@@ -200,17 +199,17 @@ if ($result->num_rows > 0) {
     </div>
     </div>
 
-<?php }
-else {
+    <?php }
+    else {
     echo "Nenhum registro encontrado.";
     echo '<button class="botao-cadastro" onclick="location.href=\'../CadastroDespesa/CadastroDespesa.php\'">Cadastrar nova despesa</button>';
 
-}
+    }
 
-?>
+    ?>
 
 
-</body>
+    </body>
 
 
 
